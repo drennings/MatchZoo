@@ -115,7 +115,6 @@ def rank_hinge_loss(y_true, y_pred):
     for i in range(_neg_num):
         y_neg_list.append(SliceTensor(0, _neg_num+1, i+1, mode='loss')(y_pred))
     y_neg = K.concatenate(y_neg_list, axis=-1)
-    print(K.eval(y_neg))
     loss = K.maximum(0., _margin + y_neg - y_pos)
     return K.mean(loss)
 
