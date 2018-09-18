@@ -1,19 +1,19 @@
 #!/bin/bash
 # help, dos2unix file
 # download the wiki-passage-qa dataset
-wget https://ciir.cs.umass.edu/downloads/wikipassageqa/WikiPassageQA.zip
-unzip WikiPassageQA.zip
+#wget http://ciir.cs.umass.edu/downloads/wikipassageqa/WikiPassageQA.zip
+#unzip WikiPassageQA.zip ./WikiPassageQA
 
 # download the glove vectors
-wget http://nlp.stanford.edu/data/glove.840B.300d.zip
-unzip glove.840B.300d.zip
-wget http://nlp.stanford.edu/data/glove.6B.zip
-unzip glove.6B.zip
+#wget http://nlp.stanford.edu/data/glove.840B.300d.zip
+#unzip glove.840B.300d.zip
+#wget http://nlp.stanford.edu/data/glove.6B.zip
+#unzip glove.6B.zip
 
 # tokenize data
 # remove chars that can not be handled by the Indri engine
 # filter queries which have no right or wrong answers
-python preprocess.py
+#python mypreprocessor.py
 
 # transfer the dataset into matchzoo dataset format
 python transfer_to_mz_format.py

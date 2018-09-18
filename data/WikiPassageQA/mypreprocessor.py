@@ -2,7 +2,7 @@
 """
 tokenize data
 Given train.tsv, dev.tsv, test.tsv
-Output train-filtered.txt, dev-filtered.txt, test-filtered.txt
+Output WikiPassageQA-train-filtered.txt, WikiPassageQA-dev-filtered.txt, WikiPassageQA-test-filtered.txt
 """
 from __future__ import print_function
 
@@ -10,6 +10,7 @@ import os
 import sys
 import json
 import nltk
+#nltk.download('punkt')
 import re
 
 def remove_special_chars(q_id, question_text):
@@ -56,7 +57,7 @@ if __name__ == '__main__':
     basedir = './WikiPassageQA/'
     in_corpfile = [basedir + 'train.tsv', basedir + 'dev.tsv', basedir + 'test.tsv']
     doc_file = basedir + 'document_passages.json'
-    outfile = [basedir + 'train-filtered.txt', basedir + 'dev-filtered.txt', basedir + 'test-filtered.txt']
+    outfile = [basedir + 'WikiPassageQA-train-filtered.txt', basedir + 'WikiPassageQA-dev-filtered.txt', basedir + 'WikiPassageQA-test-filtered.txt']
     
     document_dict = read_passages(doc_file)
     

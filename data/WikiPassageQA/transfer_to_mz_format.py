@@ -6,7 +6,7 @@ import sys
 
 basedir = './WikiPassageQA/'
 dstdir = './'
-infiles = [ basedir + 'WikiPassageQA-train.txt', basedir + 'WikiPassageQA-dev-filtered.txt', basedir + 'WikiPassageQA-test-filtered.txt' ]
+infiles = [ basedir + 'WikiPassageQA-train-filtered.txt', basedir + 'WikiPassageQA-dev-filtered.txt', basedir + 'WikiPassageQA-test-filtered.txt' ]
 outfiles = [ dstdir + 'WikiPassageQA-mz-train.txt', dstdir + 'WikiPassageQA-mz-dev.txt', dstdir + 'WikiPassageQA-mz-test.txt' ]
 
 for idx, infile in enumerate(infiles):
