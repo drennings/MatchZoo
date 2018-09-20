@@ -65,7 +65,7 @@ if __name__ == '__main__':
     doc_file = basedir + 'document_passages.json'
     outfile = [basedir + 'WikiPassageQA-train-filtered.txt', basedir + 'WikiPassageQA-dev-filtered.txt', basedir + 'WikiPassageQA-test-filtered.txt']
     
-    q_ids_that_contain_no_question = ["4149, 4148, 1315"]
+    q_ids_that_contain_no_question = ["4149", "4148", "1315"]
     q_ids_that_contain_the_same_question_but_different_answers = ["3731", "3732"]
     q_ids_that_should_be_skipped = q_ids_that_contain_no_question + q_ids_that_contain_the_same_question_but_different_answers
     doc_ids_that_have_no_question = ["188"] #The current matchzoo style for processing WikiQA which we follow, does not add the document to the corpus if there is no q about it
