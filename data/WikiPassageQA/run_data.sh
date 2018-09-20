@@ -13,7 +13,7 @@
 # tokenize data
 # remove chars that can not be handled by the Indri engine
 # filter queries which have no right or wrong answers
-#python mypreprocessor.py
+python mypreprocessor.py
 
 # transfer the dataset into matchzoo dataset format
 python transfer_to_mz_format.py

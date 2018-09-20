@@ -24,7 +24,7 @@ def read_passages(path_to_passages):
 
 def clean_special_chars(q_id, question_text):
     symbols_to_remove = ['?', "'", '"', '(', ')', ',', '.', ':', '>']
-    for symbol in symbols_to_remove():
+    for symbol in symbols_to_remove:
         question_text = question_text.replace(symbol, '')  
         
     question_text = question_text.replace('-',' ')
