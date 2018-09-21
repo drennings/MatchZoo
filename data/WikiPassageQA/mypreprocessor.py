@@ -67,9 +67,12 @@ if __name__ == '__main__':
     
     q_ids_that_contain_no_question = ["4149", "4148", "1315"]
     q_ids_that_contain_the_same_question_but_different_answers = ["3731", "3732"]
-    q_ids_that_should_be_skipped = q_ids_that_contain_no_question + q_ids_that_contain_the_same_question_but_different_answers
+    q_ids_that_are_on_a_doc_which_has_a_duplicate_passage = ["2230", "2231", "2232", "2233", "2234"] #see description for doc 769
+    q_ids_that_should_be_skipped = q_ids_that_contain_no_question + q_ids_that_contain_the_same_question_but_different_answers + q_ids_that_are_on_a_doc_which_has_a_duplicate_passage
+    
     doc_ids_that_have_no_question = ["188"] #The current matchzoo style for processing WikiQA which we follow, does not add the document to the corpus if there is no q about it
-    doc_ids_that_should_be_skipped = doc_ids_that_have_no_question #although this variable is never used, we leave it here for documentation
+    doc_ids_that_have_a_duplicate_passage_with_another_doc = ["769"] #We remove 769 since 769-14 == 243-10, 769 has less questions than 243, hence we remove this doc and its questions
+    doc_ids_that_should_be_skipped = doc_ids_that_have_no_question + doc_ids_that_have_a_duplicate_passage_with_another_doc #although this variable is never used, we leave it here for documentation
     
     document_dict = read_passages(doc_file)
     
