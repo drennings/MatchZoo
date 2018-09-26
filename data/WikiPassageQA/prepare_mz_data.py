@@ -72,8 +72,8 @@ if __name__ == '__main__':
     fout.close()
     print('Preprocess finished ...')
 
-    # dssm_corp_input = dstdir + 'corpus_preprocessed.txt'
-    # dssm_corp_output = dstdir + 'corpus_preprocessed_dssm.txt'
+    #dssm_corp_input = dstdir + 'corpus_preprocessed.txt'
+    #dssm_corp_output = dstdir + 'corpus_preprocessed_dssm.txt'
     word_dict_input = dstdir + 'word_dict.txt'
     triletter_dict_output = dstdir + 'triletter_dict.txt'
     word_triletter_output = dstdir + 'word_triletter_map.txt'
