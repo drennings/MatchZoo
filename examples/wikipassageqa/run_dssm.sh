@@ -7,4 +7,4 @@ python matchzoo/main.py --phase train --model_file ${currpath}/examples/wikipass
 
 # predict with the model
 
-python matchzoo/main.py --phase predict --model_file ${currpath}/examples/wikipassageqa/config/dssm_wikipassageqa.config
+#python matchzoo/main.py --phase predict --model_file ${currpath}/examples/wikipassageqa/config/dssm_wikipassageqa.config

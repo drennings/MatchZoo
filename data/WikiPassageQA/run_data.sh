@@ -13,12 +13,12 @@
 # tokenize data
 # remove chars that can not be handled by the Indri engine
 # filter queries which have no right or wrong answers
-python mypreprocessor.py
+#python mypreprocessor.py
 
 # transfer the dataset into matchzoo dataset format
-python transfer_to_mz_format.py
+#python transfer_to_mz_format.py
 # generate the mz-datasets
-python prepare_mz_data.py
+#python prepare_mz_data.py
 
 # generate word embedding
 python gen_w2v.py glove.840B.300d.txt word_dict.txt embed_glove_d300
