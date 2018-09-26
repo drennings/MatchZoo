@@ -2,9 +2,9 @@ cd ../../
 
 currpath=`pwd`
 # train the model
-python matchzoo/main.py --phase train --model_file ${currpath}/examples/wikiqa/config/cdssm_word_wikiqa.config
+python matchzoo/main.py --phase train --model_file ${currpath}/examples/wikipassageqa/config/cdssm_word_wikipassageqa.config
 
 
 # predict with the model
 
-python matchzoo/main.py --phase predict --model_file ${currpath}/examples/wikiqa/config/cdssm_word_wikiqa.config
+python matchzoo/main.py --phase predict --model_file ${currpath}/examples/wikipassageqa/config/cdssm_word_wikipassageqa.config
