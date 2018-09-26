@@ -48,7 +48,7 @@ if __name__ == '__main__':
     srcdir = './'
     dstdir = './'
 
-    infiles = [ srcdir + 'WikiQA-mz-train.txt', srcdir + 'WikiQA-mz-dev.txt', srcdir + 'WikiQA-mz-test.txt']
+    infiles = [ srcdir + 'WikiPassageQA-mz-train.txt', srcdir + 'WikiPassageQA-mz-dev.txt', srcdir + 'WikiPassageQA-mz-test.txt']
     corpus, rel_train, rel_valid, rel_test = prepare.run_with_train_valid_test_corpus(infiles[0], infiles[1], infiles[2])
     print('total corpus : %d ...' % (len(corpus)))
     print('total relation-train : %d ...' % (len(rel_train)))
@@ -61,7 +61,8 @@ if __name__ == '__main__':
     prepare.save_relation(dstdir + 'relation_test.txt', rel_test)
     print('Preparation finished ...')
 
-    preprocessor = Preprocess(word_stem_config={'enable': False}, word_filter_config={'min_freq': 2})
+    #preprocessor = Preprocess(word_stem_config={'enable': False}, word_filter_config={'min_freq': 2})
+    Preprocess(word_stem_config={'enable': False}, word_filter_config={'min_freq': 1}, word_seg_config = { 'enable': False, 'lang': 'en' }, doc_filter_config = { 'enable': False, 'min_len': 0, 'max_len': six.MAXSIZE }, word_stem_config = { 'enable': False }, word_lower_config = { 'enable': False }, word_filter_config = { 'enable': False, 'stop_words': nltk_stopwords.words('english'), 'min_freq': 1, 'max_freq': six.MAXSIZE, 'words_useless': None }, word_index_config = { 'word_dict': None })
     dids, docs = preprocessor.run(dstdir + 'corpus.txt')
     preprocessor.save_word_dict(dstdir + 'word_dict.txt', True)
     preprocessor.save_words_stats(dstdir + 'word_stats.txt', True)

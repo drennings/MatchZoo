@@ -1,18 +1,18 @@
 #!/bin/bash
 # help, dos2unix file
 # download the wiki-qa dataset
-#PATH NEEDS TO BE ADAPTED wget https://download.microsoft.com/download/E/5/F/E5FCFCEE-7005-4814-853D-DAA7C66507E0/WikiQACorpus.zip
-unzip WikiPassageQA.zip
+#PATH NEEDS TO BE ADAPTED TODO wget https://download.microsoft.com/download/E/5/F/E5FCFCEE-7005-4814-853D-DAA7C66507E0/WikiQACorpus.zip
+#TODO FIX THIS unzip WikiPassageQA.zip
 
 # download the glove vectors
 #wget http://nlp.stanford.edu/data/glove.840B.300d.zip
-unzip glove.840B.300d.zip
+#unzip glove.840B.300d.zip
 #wget http://nlp.stanford.edu/data/glove.6B.zip
-unzip glove.6B.zip
+#unzip glove.6B.zip
 
 # filter queries which have no right or wrong answers
 #python filter_query.py
-python mypreprocessor.py
+#python mypreprocessor.py
 
 # transfer the dataset into matchzoo dataset format
 python transfer_to_mz_format.py
