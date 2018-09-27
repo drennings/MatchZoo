@@ -4,10 +4,10 @@ import os
 import sys
 
 
-basedir = './WikiQACorpus/'
+basedir = './WikiPassageQA/'
 dstdir = './'
-infiles = [ basedir + 'WikiQA-train.txt', basedir + 'WikiQA-dev-filtered.txt', basedir + 'WikiQA-test-filtered.txt' ]
-outfiles = [ dstdir + 'WikiQA-mz-train.txt', dstdir + 'WikiQA-mz-dev.txt', dstdir + 'WikiQA-mz-test.txt' ]
+infiles = [ basedir + 'WikiPassageQA-train-filtered.txt', basedir + 'WikiPassageQA-dev-filtered.txt', basedir + 'WikiPassageQA-test-filtered.txt' ]
+outfiles = [ dstdir + 'WikiPassageQA-mz-train.txt', dstdir + 'WikiPassageQA-mz-dev.txt', dstdir + 'WikiPassageQA-mz-test.txt' ]
 
 for idx, infile in enumerate(infiles):
     outfile = outfiles[idx]

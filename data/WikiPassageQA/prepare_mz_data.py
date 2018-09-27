@@ -62,7 +62,7 @@ if __name__ == '__main__':
     print('Preparation finished ...')
 
     #preprocessor = Preprocess(word_stem_config={'enable': False}, word_filter_config={'min_freq': 2})
-    Preprocess(word_stem_config={'enable': False}, word_filter_config={'min_freq': 1}, word_seg_config = { 'enable': False, 'lang': 'en' }, doc_filter_config = { 'enable': False, 'min_len': 0, 'max_len': six.MAXSIZE }, word_stem_config = { 'enable': False }, word_lower_config = { 'enable': False }, word_filter_config = { 'enable': False, 'stop_words': nltk_stopwords.words('english'), 'min_freq': 1, 'max_freq': six.MAXSIZE, 'words_useless': None }, word_index_config = { 'word_dict': None })
+    preprocessor = Preprocess(word_seg_config = { 'enable': True, 'lang': 'en' }, doc_filter_config = { 'enable': False }, word_stem_config = { 'enable': False }, word_lower_config = { 'enable': False }, word_filter_config = { 'enable': False }, word_index_config = { 'word_dict': None })
     dids, docs = preprocessor.run(dstdir + 'corpus.txt')
     preprocessor.save_word_dict(dstdir + 'word_dict.txt', True)
     preprocessor.save_words_stats(dstdir + 'word_stats.txt', True)
