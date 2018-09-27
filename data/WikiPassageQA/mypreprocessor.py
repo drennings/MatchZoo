@@ -44,18 +44,22 @@ def clean_special_chars(q_id, question_text):
     return question_text
 
 def preprocess_q_text(q_text):
-    q_text = ' '.join(nltk.word_tokenize(q_text))
-    q_text = clean_special_chars(q_id, q_text) #needed for our indri run            
-    q_text = q_text.strip()        
+    q_text = clean_special_chars(q_id, q_text) #needed for our indri run
+	q_text = ' '.join(nltk.word_tokenize(q_text))
+    q_text = q_text.strip()
+	print "q_text == ' '.join(nltk.word_tokenize(q_text))"
+	print q_text == ' '.join(nltk.word_tokenize(q_text))
     return q_text
 
 def remove_tabs(text):
     return text.replace('\t', ' ')
 
 def preprocess_passage(passage):
-    passage = ' '.join(nltk.word_tokenize(passage))
     passage = remove_tabs(passage)
+	passage = ' '.join(nltk.word_tokenize(passage))
     passage = passage.strip()
+	print "passage == ' '.join(nltk.word_tokenize(passage))"
+	print passage == ' '.join(nltk.word_tokenize(passage))
     return passage
 
 if __name__ == '__main__':
