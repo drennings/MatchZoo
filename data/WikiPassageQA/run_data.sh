@@ -12,7 +12,7 @@
 
 # filter queries which have no right or wrong answers
 #python filter_query.py
-#python mypreprocessor.py
+python mypreprocessor.py
 
 # transfer the dataset into matchzoo dataset format
 python transfer_to_mz_format.py
