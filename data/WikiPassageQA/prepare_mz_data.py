@@ -62,7 +62,7 @@ if __name__ == '__main__':
     print('Preparation finished ...')
 
     #preprocessor = Preprocess(word_stem_config={'enable': False}, word_filter_config={'min_freq': 2})
-    preprocessor = Preprocess(word_seg_config = { 'enable': True, 'lang': 'en' }, doc_filter_config = { 'enable': False }, word_stem_config = { 'enable': False }, word_lower_config = { 'enable': False }, word_filter_config = { 'enable': False }, word_index_config = { 'word_dict': None })
+    preprocessor = Preprocess(word_seg_config = { 'enable': True, 'lang': 'en' }, doc_filter_config = { 'enable': False }, word_stem_config = { 'enable': True }, word_lower_config = { 'enable': False }, word_filter_config = { 'enable': False }, word_index_config = { 'word_dict': None })
     dids, docs = preprocessor.run(dstdir + 'corpus.txt')
     #print("INFO")
     #print(dids[0])
