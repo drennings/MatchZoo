@@ -130,6 +130,7 @@ class Preprocess(object):
         for inum, ws in enumerate(docs):
             did = dids[inum]
             if did.startswith("Q"):
+                docs_num -= 1
                 for w in ws:
                     if w not in words_stats:
                         words_stats[w] = {}
