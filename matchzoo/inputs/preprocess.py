@@ -69,7 +69,7 @@ class Preprocess(object):
             print('word_lower...')
             docs = Preprocess.word_lower(docs)
 
-        self._words_stats = Preprocess.cal_words_stat(docs)
+        self._words_stats = Preprocess.cal_words_stat(dids, docs)
 
         if self._word_filter_config['enable']:
             print('word_filter...')
@@ -123,23 +123,50 @@ class Preprocess(object):
         docs = getattr(Preprocess, '%s_%s' % (sys._getframe().f_code.co_name, config['lang']))(docs)
         return docs
 
-    @staticmethod
-    def cal_words_stat(docs):
+    @staticmethod	
+    def cal_words_stat(dids, docs):
         words_stats = {}
         docs_num = len(docs)
-        for ws in docs:
-            for w in ws:
-                if w not in words_stats:
-                    words_stats[w] = {}
-                    words_stats[w]['cf'] = 0
-                    words_stats[w]['df'] = 0
-                    words_stats[w]['idf'] = 0
-                words_stats[w]['cf'] += 1
-            for w in set(ws):
-                words_stats[w]['df'] += 1
+        for inum, ws in enumerate(docs):
+            did = dids[inum]
+            if did.startswith("Q"):
+                for w in ws:
+                    if w not in words_stats:
+                        words_stats[w] = {}
+                        words_stats[w]['cf'] = 0
+                        words_stats[w]['df'] = 0
+                        words_stats[w]['idf'] = 0
+            elif did.startswith("D"):
+                for w in ws:
+                    if w not in words_stats:
+                        words_stats[w] = {}
+                        words_stats[w]['cf'] = 0
+                        words_stats[w]['df'] = 0
+                        words_stats[w]['idf'] = 0
+                    words_stats[w]['cf'] += 1
+                for w in set(ws):
+                    words_stats[w]['df'] += 1
         for w, winfo in words_stats.items():
             words_stats[w]['idf'] = np.log( (1. + docs_num) / (1. + winfo['df']))
         return words_stats
+
+#    @staticmethod
+#    def cal_words_stat(docs):
+#        words_stats = {}
+#        docs_num = len(docs)
+#        for ws in docs:
+#            for w in ws:
+#                if w not in words_stats:
+#                    words_stats[w] = {}
+#                    words_stats[w]['cf'] = 0
+#                    words_stats[w]['df'] = 0
+#                    words_stats[w]['idf'] = 0
+#                words_stats[w]['cf'] += 1
+#            for w in set(ws):
+#                words_stats[w]['df'] += 1
+#        for w, winfo in words_stats.items():
+#            words_stats[w]['idf'] = np.log( (1. + docs_num) / (1. + winfo['df']))
+#        return words_stats
 
     @staticmethod
     def word_filter(docs, config, words_stats):
