@@ -2,9 +2,9 @@ cd ../../
 
 currpath=`pwd`
 # train the model
-python matchzoo/main.py --phase train --model_file ${currpath}/examples/wikipassageqa/config/drmm_tks_wikipassageqa.config
+python matchzoo/main.py --phase train --model_file ${currpath}/examples/wikipassageqa_long/config/drmm_tks_wikipassageqa.config
 
 
 # predict with the model
 
-python matchzoo/main.py --phase predict --model_file ${currpath}/examples/wikipassageqa/config/drmm_tks_wikipassageqa.config
+python matchzoo/main.py --phase predict --model_file ${currpath}/examples/wikipassageqa_long/config/drmm_tks_wikipassageqa.config
