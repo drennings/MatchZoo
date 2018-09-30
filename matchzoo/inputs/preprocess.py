@@ -174,7 +174,7 @@ class Preprocess(object):
         if config['words_useless'] is None:
             config['words_useless'] = set()
             # filter with stop_words
-            config['words_useless'].update(config['stop_words'])
+            #config['words_useless'].update(config['stop_words'])
             # filter with min_freq and max_freq
             for w, winfo in words_stats.items():
                 # filter too frequent words or rare words
