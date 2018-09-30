@@ -1,0 +1,13 @@
+#run_anmm.sh
+#run_drmm_tks.sh
+run_duet.sh
+run_matchpyramid.sh
+run_mvlstm.sh
+run_drmm.sh
+run_dssm.sh
+run_cdssm.sh
+run_arci.sh
+run_arcii.sh
+run_cdssm_word.sh
+run_conv_knrm.sh
+run_knrm.sh
