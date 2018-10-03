@@ -2,9 +2,9 @@ cd ../../
 
 currpath=`pwd`
 # train the model
-python matchzoo/main.py --phase train --model_file ${currpath}/examples/wikipassageqa_lnc2/config/arcii_wikipassageqa_lnc2.config
+python matchzoo/main.py --phase train --model_file ${currpath}/examples/wikipassageqa_lnc2_test/config/arcii_wikipassageqa_lnc2_test.config
 
 
 # predict with the model
 
-python matchzoo/main.py --phase predict --model_file ${currpath}/examples/wikipassageqa_lnc2/config/arcii_wikipassageqa_lnc2.config
+python matchzoo/main.py --phase predict --model_file ${currpath}/examples/wikipassageqa_lnc2_test/config/arcii_wikipassageqa_lnc2_test.config
