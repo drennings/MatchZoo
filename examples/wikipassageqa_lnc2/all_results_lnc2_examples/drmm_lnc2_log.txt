@@ -1,0 +1,213 @@
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/WikiPassageQA_LNC2/relation_test.hist-60.txt", 
+      "relation_file": "./data/WikiPassageQA_LNC2/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/WikiPassageQA_LNC2/relation_test.hist-60.txt", 
+      "relation_file": "./data/WikiPassageQA_LNC2/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "train": {
+      "relation_file": "./data/WikiPassageQA_LNC2/relation_train.txt", 
+      "input_type": "DRMM_PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "hist_feats_file": "./data/WikiPassageQA_LNC2/relation_train.hist-60.txt", 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 111166, 
+      "use_dpool": false, 
+      "embed_size": 300, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/WikiPassageQA_LNC2/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/WikiPassageQA_LNC2/corpus_preprocessed.txt", 
+      "hist_size": 60, 
+      "embed_path": "./data/WikiPassageQA_LNC2/embed.idf", 
+      "text1_maxlen": 20, 
+      "train_embed": false, 
+      "text2_maxlen": 250
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/WikiPassageQA_LNC2/relation_valid.hist-60.txt", 
+      "relation_file": "./data/WikiPassageQA_LNC2/relation_valid.txt", 
+      "batch_list": 10
+    }
+  }, 
+  "global": {
+    "optimizer": "adadelta", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 1.0, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/wikipassageqa_lnc2/weights/drmm.wikipassageqa_lnc2.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.drmm.wikipassageqa_lnc2.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "ndcg@3", 
+    "ndcg@5", 
+    "map"
+  ], 
+  "net_name": "DRMM", 
+  "model": {
+    "model_py": "drmm.DRMM", 
+    "setting": {
+      "dropout_rate": 0.0, 
+      "hidden_sizes": [
+        20, 
+        1
+      ], 
+      "num_layers": 2
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[./data/WikiPassageQA_LNC2/embed.idf]
+	Embedding size: 111166
+Generate numpy embed: (111166, 300)
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'train'] in TRAIN, [u'test', u'valid'] in EVAL.
+[./data/WikiPassageQA_LNC2/corpus_preprocessed.txt]
+	Data size: 77081
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/WikiPassageQA_LNC2/relation_train.txt', u'vocab_size': 111166, u'query_per_iter': 50, u'use_dpool': False, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'DRMM_PairGenerator', u'text1_corpus': u'./data/WikiPassageQA_LNC2/corpus_preprocessed.txt', u'batch_size': 100, u'batch_per_iter': 5, u'text2_corpus': u'./data/WikiPassageQA_LNC2/corpus_preprocessed.txt', u'hist_size': 60, u'hist_feats_file': u'./data/WikiPassageQA_LNC2/relation_train.hist-60.txt', u'embed_path': u'./data/WikiPassageQA_LNC2/embed.idf', u'text1_maxlen': 20, u'phase': u'TRAIN', 'embed': array([[ 0.619424,  0.619424,  0.619424, ...,  0.619424,  0.619424,
+         0.619424],
+       [ 3.109719,  3.109719,  3.109719, ...,  3.109719,  3.109719,
+         3.109719],
+       [ 3.913569,  3.913569,  3.913569, ...,  3.913569,  3.913569,
+         3.913569],
+       ...,
+       [10.136146, 10.136146, 10.136146, ..., 10.136146, 10.136146,
+        10.136146],
+       [10.136146, 10.136146, 10.136146, ..., 10.136146, 10.136146,
+        10.136146],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 250, u'use_iter': False}
+[./data/WikiPassageQA_LNC2/relation_train.txt]
+	Instance size: 279395
+Pair Instance Count: 584823
+[./data/WikiPassageQA_LNC2/relation_train.hist-60.txt]
+	Feature size: 279395
+[DRMM_PairGenerator] init done
+{u'relation_file': u'./data/WikiPassageQA_LNC2/relation_test.txt', u'vocab_size': 111166, u'use_dpool': False, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'DRMM_ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_LNC2/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_LNC2/corpus_preprocessed.txt', u'hist_size': 60, u'hist_feats_file': u'./data/WikiPassageQA_LNC2/relation_test.hist-60.txt', u'embed_path': u'./data/WikiPassageQA_LNC2/embed.idf', u'text1_maxlen': 20, u'phase': u'EVAL', 'embed': array([[ 0.619424,  0.619424,  0.619424, ...,  0.619424,  0.619424,
+         0.619424],
+       [ 3.109719,  3.109719,  3.109719, ...,  3.109719,  3.109719,
+         3.109719],
+       [ 3.913569,  3.913569,  3.913569, ...,  3.913569,  3.913569,
+         3.913569],
+       ...,
+       [10.136146, 10.136146, 10.136146, ..., 10.136146, 10.136146,
+        10.136146],
+       [10.136146, 10.136146, 10.136146, ..., 10.136146, 10.136146,
+        10.136146],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 250}
+[./data/WikiPassageQA_LNC2/relation_test.txt]
+	Instance size: 34268
+List Instance Count: 414
+[./data/WikiPassageQA_LNC2/relation_test.hist-60.txt]
+	Feature size: 34268
+[DRMM_ListGenerator] init done, list number: 414. 
+{u'relation_file': u'./data/WikiPassageQA_LNC2/relation_valid.txt', u'vocab_size': 111166, u'use_dpool': False, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'DRMM_ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_LNC2/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_LNC2/corpus_preprocessed.txt', u'hist_size': 60, u'hist_feats_file': u'./data/WikiPassageQA_LNC2/relation_valid.hist-60.txt', u'embed_path': u'./data/WikiPassageQA_LNC2/embed.idf', u'text1_maxlen': 20, u'phase': u'EVAL', 'embed': array([[ 0.619424,  0.619424,  0.619424, ...,  0.619424,  0.619424,
+         0.619424],
+       [ 3.109719,  3.109719,  3.109719, ...,  3.109719,  3.109719,
+         3.109719],
+       [ 3.913569,  3.913569,  3.913569, ...,  3.913569,  3.913569,
+         3.913569],
+       ...,
+       [10.136146, 10.136146, 10.136146, ..., 10.136146, 10.136146,
+        10.136146],
+       [10.136146, 10.136146, 10.136146, ..., 10.136146, 10.136146,
+        10.136146],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 250}
+[./data/WikiPassageQA_LNC2/relation_valid.txt]
+	Instance size: 36520
+List Instance Count: 415
+[./data/WikiPassageQA_LNC2/relation_valid.hist-60.txt]
+	Feature size: 36520
+[DRMM_ListGenerator] init done, list number: 415. 
+[DRMM] init done
+[layer]: Input	[shape]: [None, 20] 
+18.7% memory has been used
+[layer]: Input	[shape]: [None, 20, 60] 
+18.7% memory has been used
+[layer]: Embedding	[shape]: [None, 20, 300] 
+18.8% memory has been used
+[layer]: Dense	[shape]: [None, 20, 1] 
+18.8% memory has been used
+[layer]: Lambda-softmax	[shape]: [None, 20, 1] 
+18.8% memory has been used
+[layer]: Dropout	[shape]: [None, 20, 60] 
+18.8% memory has been used
+[layer]: Dense	[shape]: [None, 20, 20] 
+18.8% memory has been used
+[layer]: Dense	[shape]: [None, 20, 1] 
+18.8% memory has been used
+[layer]: Permute	[shape]: [None, 1, 20] 
+18.8% memory has been used
+[layer]: Reshape	[shape]: [None, 20] 
+18.8% memory has been used
+[layer]: Reshape	[shape]: [None, 20] 
+18.8% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+18.8% memory has been used
+[Model] Model Compile Done.
+[10-05-2018 20:00:40]	[Train:train] Iter:0	loss=0.999603
+[10-05-2018 20:00:41]	[Eval:test] Iter:0	ndcg@3=0.083849	map=0.131543	ndcg@5=0.106505
+[10-05-2018 20:00:44]	[Eval:valid] Iter:0	ndcg@3=0.074462	map=0.121125	ndcg@5=0.094292
+[10-05-2018 20:00:46]	[Train:train] Iter:1	loss=0.988521
+[10-05-2018 20:00:46]	[Eval:test] Iter:1	ndcg@3=0.111325	map=0.158376	ndcg@5=0.140595
+[10-05-2018 20:00:48]	[Eval:valid] Iter:1	ndcg@3=0.088797	map=0.136199	ndcg@5=0.112013
+[10-05-2018 20:00:50]	[Train:train] Iter:2	loss=0.963529
+[10-05-2018 20:00:51]	[Eval:test] Iter:2	ndcg@3=0.120964	map=0.165221	ndcg@5=0.151770
+[10-05-2018 20:00:53]	[Eval:valid] Iter:2	ndcg@3=0.094385	map=0.142927	ndcg@5=0.120504
+[10-05-2018 20:00:55]	[Train:train] Iter:3	loss=0.911896
+[10-05-2018 20:00:55]	[Eval:test] Iter:3	ndcg@3=0.117674	map=0.165736	ndcg@5=0.148300
+[10-05-2018 20:00:57]	[Eval:valid] Iter:3	ndcg@3=0.098138	map=0.147873	ndcg@5=0.126635
+[10-05-2018 20:00:59]	[Train:train] Iter:4	loss=0.880186
+[10-05-2018 20:01:00]	[Eval:test] Iter:4	ndcg@3=0.129453	map=0.179089	ndcg@5=0.159920
+[10-05-2018 20:01:02]	[Eval:valid] Iter:4	ndcg@3=0.116907	map=0.163112	ndcg@5=0.142226
+[10-05-2018 20:01:04]	[Train:train] Iter:5	loss=0.824645
+[10-05-2018 20:01:04]	[Eval:test] Iter:5	ndcg@3=0.151516	map=0.196642	ndcg@5=0.186700
+[10-05-2018 20:01:06]	[Eval:valid] Iter:5	ndcg@3=0.133169	map=0.180201	ndcg@5=0.159558
+[10-05-2018 20:01:08]	[Train:train] Iter:6	loss=0.757055
+[10-05-2018 20:01:08]	[Eval:test] Iter:6	ndcg@3=0.134582	map=0.180725	ndcg@5=0.168359
+[10-05-2018 20:01:10]	[Eval:valid] Iter:6	ndcg@3=0.136387	map=0.169416	ndcg@5=0.153709
+[10-05-2018 20:01:13]	[Train:train] Iter:7	loss=0.731858
+[10-05-2018 20:01:13]	[Eval:test] Iter:7	ndcg@3=0.190484	map=0.230597	ndcg@5=0.224319
+[10-05-2018 20:01:15]	[Eval:valid] Iter:7	ndcg@3=0.171306	map=0.214547	ndcg@5=0.199861
+[10-05-2018 20:01:17]	[Train:train] Iter:8	loss=0.714623
+[10-05-2018 20:01:17]	[Eval:test] Iter:8	ndcg@3=0.204655	map=0.247483	ndcg@5=0.244377
+[10-05-2018 20:01:19]	[Eval:valid] Iter:8	ndcg@3=0.186010	map=0.222450	ndcg@5=0.208917
+[10-05-2018 20:01:22]	[Train:train] Iter:9	loss=0.716915
+[10-05-2018 20:01:22]	[Eval:test] Iter:9	ndcg@3=0.217125	map=0.263936	ndcg@5=0.259256
+[10-05-2018 20:01:24]	[Eval:valid] Iter:9	ndcg@3=0.205578	map=0.241908	ndcg@5=0.232406
+[10-05-2018 20:01:26]	[Train:train] Iter:10	loss=0.667866
+[10-05-2018 20:01:27]	[Eval:test] Iter:10	ndcg@3=0.222843	map=0.265412	ndcg@5=0.262885

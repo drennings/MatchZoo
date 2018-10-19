@@ -13,8 +13,16 @@ for idx, infile in enumerate(infiles):
     outfile = outfiles[idx]
     fout = open(outfile, 'w')
     for line in open(infile, 'r'):
+        if line == "":
+            continue
         r = line.strip().split('\t')
+        #print(r)###TODO REMOVE TODO
+        if r == [""]:
+            continue
+        if len(r) != 3:
+            print(r)
         fout.write('%s\t%s\t%s\n' % (r[2], r[0], r[1]))
+        #break###TODO REMOVE TODO
     fout.close()
 
 

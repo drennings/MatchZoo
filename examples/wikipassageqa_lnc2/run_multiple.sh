@@ -1,13 +1,17 @@
-#bash run_anmm.sh
-#bash run_drmm_tks.sh
-#bash run_duet.sh
-#bash run_matchpyramid.sh
-#bash run_mvlstm.sh
-#bash run_drmm.sh
-bash run_cdssm.sh
-bash run_dssm.sh
-bash run_arci.sh
-bash run_arcii.sh
-bash run_cdssm_word.sh
-bash run_conv_knrm.sh
-bash run_knrm.sh
+#bash run_anmm.sh > anmm_lnc2_log.txt
+#bash run_matchpyramid.sh > matchpyramid_lnc2_log.txt
+#bash run_duet.sh > duet_lnc2_log.txt
+#bash run_anmm.sh > anmm_lnc2_log.txt
+#bash run_drmm_tks.sh > drmm_lnc2_log.txt
+#bash run_mvlstm.sh > mvlstm_lnc2_log.txt
+bash run_drmm.sh > drmm_nontks_lnc2_log.txt
+bash run_mvlstm.sh > mvlstm_lnc2_log.txt
+#bash run_duet.sh > duet_lnc2_log.txt
+bash run_matchpyramid.sh > matchpyramid_lnc2_log.txt
+bash run_cdssm.sh > cdssm_lnc2_log.txt
+bash run_arci.sh > arci_lnc2_log.txt
+bash run_arcii.sh > arcii_lnc2_log.txt
+bash run_cdssm_word.sh > cdssm_lnc2_log.txt
+bash run_conv_knrm.sh > conv_knrm_lnc2_log.txt
+bash run_knrm.sh > knrm_lnc2_log.txt
+bash run_dssm.sh > dssm_lnc2__log.txt

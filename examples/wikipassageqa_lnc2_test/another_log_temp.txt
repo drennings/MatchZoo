@@ -1,0 +1,176 @@
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "train": {
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_train.txt", 
+      "input_type": "PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 111166, 
+      "use_dpool": true, 
+      "embed_size": 300, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt", 
+      "embed_path": "./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm", 
+      "text1_maxlen": 20, 
+      "train_embed": true, 
+      "text2_maxlen": 250
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_valid.txt", 
+      "batch_list": 10
+    }
+  }, 
+  "global": {
+    "optimizer": "adadelta", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 1.0, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/wikipassageqa_lnc2_test/weights/matchpyramid.wikipassageqa_lnc2_test.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.matchpyramid.wikipassageqa_lnc2_test.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "ndcg@3", 
+    "ndcg@5", 
+    "map"
+  ], 
+  "net_name": "MatchPyramid", 
+  "model": {
+    "model_py": "matchpyramid.MatchPyramid", 
+    "setting": {
+      "dpool_size": [
+        3, 
+        10
+      ], 
+      "dropout_rate": 0.95, 
+      "kernel_count": 64, 
+      "kernel_size": [
+        3, 
+        3
+      ]
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm]
+	Embedding size: 111166
+Generate numpy embed: (111166, 300)
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'train'] in TRAIN, [u'test', u'valid'] in EVAL.
+[./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt]
+	Data size: 114418
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/WikiPassageQA_LNC2_TEST/relation_train.txt', u'vocab_size': 111166, u'query_per_iter': 50, u'use_dpool': True, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'PairGenerator', u'text1_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'batch_size': 100, u'batch_per_iter': 5, u'text2_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'embed_path': u'./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm', u'text1_maxlen': 20, u'phase': u'TRAIN', 'embed': array([[-0.035561,  0.037646, -0.057493, ..., -0.026155, -0.090546,
+         0.080035],
+       [-0.007506,  0.105635, -0.042531, ...,  0.022972,  0.047879,
+         0.044536],
+       [-0.035648,  0.035573, -0.092225, ..., -0.036012,  0.04055 ,
+         0.024583],
+       ...,
+       [ 0.095756,  0.077891,  0.012054, ..., -0.021931, -0.065531,
+        -0.016991],
+       [ 0.076127, -0.027156,  0.099034, ..., -0.048247, -0.065637,
+         0.11426 ],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': True, u'text2_maxlen': 250, u'use_iter': False}
+[./data/WikiPassageQA_LNC2_TEST/relation_train.txt]
+	Instance size: 193900
+Pair Instance Count: 320348
+[PairGenerator] init done
+{u'relation_file': u'./data/WikiPassageQA_LNC2_TEST/relation_test.txt', u'vocab_size': 111166, u'use_dpool': True, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'embed_path': u'./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm', u'text1_maxlen': 20, u'phase': u'EVAL', 'embed': array([[-0.035561,  0.037646, -0.057493, ..., -0.026155, -0.090546,
+         0.080035],
+       [-0.007506,  0.105635, -0.042531, ...,  0.022972,  0.047879,
+         0.044536],
+       [-0.035648,  0.035573, -0.092225, ..., -0.036012,  0.04055 ,
+         0.024583],
+       ...,
+       [ 0.095756,  0.077891,  0.012054, ..., -0.021931, -0.065531,
+        -0.016991],
+       [ 0.076127, -0.027156,  0.099034, ..., -0.048247, -0.065637,
+         0.11426 ],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': True, u'text2_maxlen': 250}
+[./data/WikiPassageQA_LNC2_TEST/relation_test.txt]
+	Instance size: 95464
+List Instance Count: 414
+[ListGenerator] init done
+{u'relation_file': u'./data/WikiPassageQA_LNC2_TEST/relation_valid.txt', u'vocab_size': 111166, u'use_dpool': True, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'embed_path': u'./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm', u'text1_maxlen': 20, u'phase': u'EVAL', 'embed': array([[-0.035561,  0.037646, -0.057493, ..., -0.026155, -0.090546,
+         0.080035],
+       [-0.007506,  0.105635, -0.042531, ...,  0.022972,  0.047879,
+         0.044536],
+       [-0.035648,  0.035573, -0.092225, ..., -0.036012,  0.04055 ,
+         0.024583],
+       ...,
+       [ 0.095756,  0.077891,  0.012054, ..., -0.021931, -0.065531,
+        -0.016991],
+       [ 0.076127, -0.027156,  0.099034, ..., -0.048247, -0.065637,
+         0.11426 ],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': True, u'text2_maxlen': 250}
+[./data/WikiPassageQA_LNC2_TEST/relation_valid.txt]
+	Instance size: 25723
+List Instance Count: 415
+[ListGenerator] init done
+[MatchPyramid] init done
+[layer]: Input	[shape]: [None, 20] 
+20.2% memory has been used
+[layer]: Input	[shape]: [None, 250] 
+20.2% memory has been used
+[layer]: Input	[shape]: [None, 20, 250, 3] 
+20.2% memory has been used
+[layer]: Embedding	[shape]: [None, 20, 300] 
+20.3% memory has been used
+[layer]: Embedding	[shape]: [None, 250, 300] 
+20.3% memory has been used
+[layer]: Dot	[shape]: [None, 20, 250] 
+20.3% memory has been used
+[layer]: Reshape	[shape]: [None, 20, 250, 1] 
+20.3% memory has been used
+[layer]: Conv2D	[shape]: [None, 20, 250, 64] 
+20.3% memory has been used
+[layer]: DynamicMaxPooling	[shape]: [None, 3, 10, 64] 
+20.3% memory has been used
+[layer]: Flatten	[shape]: [None, None] 
+20.3% memory has been used
+[layer]: Dropout	[shape]: [None, None] 
+20.3% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+20.3% memory has been used
+[Model] Model Compile Done.
+[10-04-2018 00:54:44]	[Train:train] Iter:0	loss=1.001862
+[10-04-2018 00:54:57]	[Eval:test] Iter:0	ndcg@3=0.111408	map=0.156535	ndcg@5=0.120152

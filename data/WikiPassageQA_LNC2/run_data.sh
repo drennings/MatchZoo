@@ -26,7 +26,7 @@ python gen_w2v.py glove.6B.50d.txt word_dict.txt embed_glove_d50
 python norm_embed.py embed_glove_d50 embed_glove_d50_norm
 
 # copy old stats file
-cp ./../WikiPassageQA/words_stats.txt ./
+cp ./../WikiPassageQA/word_stats.txt ./
 
 # generate data histograms for drmm model
 # generate data bin sums for anmm model

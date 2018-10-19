@@ -14,6 +14,8 @@ for idx, infile in enumerate(infiles):
     fout = open(outfile, 'w')
     for line in open(infile, 'r'):
         r = line.strip().split('\t')
+        if len(r) < 3:
+            continue
         fout.write('%s\t%s\t%s\n' % (r[2], r[0], r[1]))
     fout.close()
 

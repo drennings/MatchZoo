@@ -4,10 +4,11 @@
 #bash run_matchpyramid.sh
 #bash run_mvlstm.sh
 #bash run_drmm.sh
-bash run_cdssm.sh
-bash run_dssm.sh
+#bash run_cdssm.sh
+#bash run_dssm.sh # takes over 9 hours
 bash run_arci.sh
 bash run_arcii.sh
-bash run_cdssm_word.sh
-bash run_conv_knrm.sh
 bash run_knrm.sh
+bash run_conv_knrm.sh
+bash run_cdssm.sh
+

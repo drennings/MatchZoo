@@ -1,0 +1,647 @@
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "train": {
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_train.txt", 
+      "input_type": "PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 111166, 
+      "use_dpool": false, 
+      "embed_size": 300, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt", 
+      "embed_path": "./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm", 
+      "text1_maxlen": 20, 
+      "train_embed": true, 
+      "text2_maxlen": 250
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_valid.txt", 
+      "batch_list": 10
+    }
+  }, 
+  "global": {
+    "optimizer": "adam", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 0.001, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/wikipassageqa_lnc2_test/weights/knrm.wikipassageqa_lnc2_test.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.knrm_ranking.wikipassageqa_lnc2_test.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "ndcg@3", 
+    "ndcg@5", 
+    "map"
+  ], 
+  "net_name": "KNRM", 
+  "model": {
+    "model_py": "knrm.KNRM", 
+    "setting": {
+      "kernel_num": 21, 
+      "dropout_rate": 0.0, 
+      "sigma": 0.1, 
+      "exact_sigma": 0.001
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm]
+	Embedding size: 111166
+Generate numpy embed: (111166, 300)
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'train'] in TRAIN, [u'test', u'valid'] in EVAL.
+[./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt]
+	Data size: 114418
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/WikiPassageQA_LNC2_TEST/relation_train.txt', u'vocab_size': 111166, u'query_per_iter': 50, u'use_dpool': False, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'PairGenerator', u'text1_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'batch_size': 100, u'batch_per_iter': 5, u'text2_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'embed_path': u'./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm', u'text1_maxlen': 20, u'phase': u'TRAIN', 'embed': array([[-0.035561,  0.037646, -0.057493, ..., -0.026155, -0.090546,
+         0.080035],
+       [-0.007506,  0.105635, -0.042531, ...,  0.022972,  0.047879,
+         0.044536],
+       [-0.035648,  0.035573, -0.092225, ..., -0.036012,  0.04055 ,
+         0.024583],
+       ...,
+       [ 0.095756,  0.077891,  0.012054, ..., -0.021931, -0.065531,
+        -0.016991],
+       [ 0.076127, -0.027156,  0.099034, ..., -0.048247, -0.065637,
+         0.11426 ],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': True, u'text2_maxlen': 250, u'use_iter': False}
+[./data/WikiPassageQA_LNC2_TEST/relation_train.txt]
+	Instance size: 193900
+Pair Instance Count: 320348
+[PairGenerator] init done
+{u'relation_file': u'./data/WikiPassageQA_LNC2_TEST/relation_test.txt', u'vocab_size': 111166, u'use_dpool': False, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'embed_path': u'./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm', u'text1_maxlen': 20, u'phase': u'EVAL', 'embed': array([[-0.035561,  0.037646, -0.057493, ..., -0.026155, -0.090546,
+         0.080035],
+       [-0.007506,  0.105635, -0.042531, ...,  0.022972,  0.047879,
+         0.044536],
+       [-0.035648,  0.035573, -0.092225, ..., -0.036012,  0.04055 ,
+         0.024583],
+       ...,
+       [ 0.095756,  0.077891,  0.012054, ..., -0.021931, -0.065531,
+        -0.016991],
+       [ 0.076127, -0.027156,  0.099034, ..., -0.048247, -0.065637,
+         0.11426 ],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': True, u'text2_maxlen': 250}
+[./data/WikiPassageQA_LNC2_TEST/relation_test.txt]
+	Instance size: 95464
+List Instance Count: 414
+[ListGenerator] init done
+{u'relation_file': u'./data/WikiPassageQA_LNC2_TEST/relation_valid.txt', u'vocab_size': 111166, u'use_dpool': False, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'embed_path': u'./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm', u'text1_maxlen': 20, u'phase': u'EVAL', 'embed': array([[-0.035561,  0.037646, -0.057493, ..., -0.026155, -0.090546,
+         0.080035],
+       [-0.007506,  0.105635, -0.042531, ...,  0.022972,  0.047879,
+         0.044536],
+       [-0.035648,  0.035573, -0.092225, ..., -0.036012,  0.04055 ,
+         0.024583],
+       ...,
+       [ 0.095756,  0.077891,  0.012054, ..., -0.021931, -0.065531,
+        -0.016991],
+       [ 0.076127, -0.027156,  0.099034, ..., -0.048247, -0.065637,
+         0.11426 ],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': True, u'text2_maxlen': 250}
+[./data/WikiPassageQA_LNC2_TEST/relation_valid.txt]
+	Instance size: 25723
+List Instance Count: 415
+[ListGenerator] init done
+[KNRM] init done
+[layer]: Input	[shape]: [None, 20] 
+20.0% memory has been used
+[layer]: Input	[shape]: [None, 250] 
+20.0% memory has been used
+[layer]: Embedding	[shape]: [None, 20, 300] 
+20.1% memory has been used
+[layer]: Embedding	[shape]: [None, 250, 300] 
+20.1% memory has been used
+[layer]: Dot	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Stack	[shape]: [None, 21] 
+20.1% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+20.1% memory has been used
+[Model] Model Compile Done.
+[10-04-2018 02:16:00]	[Train:train] Iter:0	loss=0.946662
+[10-04-2018 02:16:12]	[Eval:test] Iter:0	ndcg@3=0.178097	map=0.142950	ndcg@5=0.165135
+[10-04-2018 02:16:35]	[Eval:valid] Iter:0	ndcg@3=0.236614	map=0.288355	ndcg@5=0.288388
+[10-04-2018 02:16:40]	[Train:train] Iter:1	loss=0.848825
+[10-04-2018 02:16:45]	[Eval:test] Iter:1	ndcg@3=0.152390	map=0.132758	ndcg@5=0.142337
+[10-04-2018 02:17:08]	[Eval:valid] Iter:1	ndcg@3=0.209675	map=0.260448	ndcg@5=0.247343
+[10-04-2018 02:17:14]	[Train:train] Iter:2	loss=0.737361
+[10-04-2018 02:17:19]	[Eval:test] Iter:2	ndcg@3=0.134618	map=0.125723	ndcg@5=0.130653
+[10-04-2018 02:17:43]	[Eval:valid] Iter:2	ndcg@3=0.177515	map=0.235308	ndcg@5=0.222342
+[10-04-2018 02:17:48]	[Train:train] Iter:3	loss=0.621126
+[10-04-2018 02:17:53]	[Eval:test] Iter:3	ndcg@3=0.138909	map=0.127536	ndcg@5=0.129168
+[10-04-2018 02:18:17]	[Eval:valid] Iter:3	ndcg@3=0.189336	map=0.245835	ndcg@5=0.237462
+[10-04-2018 02:18:22]	[Train:train] Iter:4	loss=0.565921
+[10-04-2018 02:18:26]	[Eval:test] Iter:4	ndcg@3=0.132203	map=0.127668	ndcg@5=0.131071
+[10-04-2018 02:18:51]	[Eval:valid] Iter:4	ndcg@3=0.213232	map=0.266077	ndcg@5=0.255325
+[10-04-2018 02:18:57]	[Train:train] Iter:5	loss=0.556123
+[10-04-2018 02:19:01]	[Eval:test] Iter:5	ndcg@3=0.141149	map=0.130849	ndcg@5=0.139050
+[10-04-2018 02:19:25]	[Eval:valid] Iter:5	ndcg@3=0.221504	map=0.279727	ndcg@5=0.272673
+[10-04-2018 02:19:31]	[Train:train] Iter:6	loss=0.529057
+[10-04-2018 02:19:35]	[Eval:test] Iter:6	ndcg@3=0.139894	map=0.129943	ndcg@5=0.133631
+[10-04-2018 02:20:00]	[Eval:valid] Iter:6	ndcg@3=0.225828	map=0.278151	ndcg@5=0.270780
+[10-04-2018 02:20:05]	[Train:train] Iter:7	loss=0.477535
+[10-04-2018 02:20:09]	[Eval:test] Iter:7	ndcg@3=0.124687	map=0.122908	ndcg@5=0.119985
+[10-04-2018 02:20:34]	[Eval:valid] Iter:7	ndcg@3=0.216598	map=0.269007	ndcg@5=0.266780
+[10-04-2018 02:20:40]	[Train:train] Iter:8	loss=0.437281
+[10-04-2018 02:20:44]	[Eval:test] Iter:8	ndcg@3=0.128532	map=0.126180	ndcg@5=0.127488
+[10-04-2018 02:21:09]	[Eval:valid] Iter:8	ndcg@3=0.206410	map=0.260753	ndcg@5=0.250772
+[10-04-2018 02:21:15]	[Train:train] Iter:9	loss=0.424252
+[10-04-2018 02:21:19]	[Eval:test] Iter:9	ndcg@3=0.135779	map=0.130084	ndcg@5=0.129893
+[10-04-2018 02:21:44]	[Eval:valid] Iter:9	ndcg@3=0.213253	map=0.267786	ndcg@5=0.257196
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "train": {
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_train.txt", 
+      "input_type": "PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 111166, 
+      "use_dpool": false, 
+      "embed_size": 300, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt", 
+      "embed_path": "./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm", 
+      "text1_maxlen": 20, 
+      "train_embed": true, 
+      "text2_maxlen": 250
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_valid.txt", 
+      "batch_list": 10
+    }
+  }, 
+  "global": {
+    "optimizer": "adam", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 0.001, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/wikipassageqa_lnc2_test/weights/knrm.wikipassageqa_lnc2_test.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.knrm_ranking.wikipassageqa_lnc2_test.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "ndcg@3", 
+    "ndcg@5", 
+    "map"
+  ], 
+  "net_name": "KNRM", 
+  "model": {
+    "model_py": "knrm.KNRM", 
+    "setting": {
+      "kernel_num": 21, 
+      "dropout_rate": 0.0, 
+      "sigma": 0.1, 
+      "exact_sigma": 0.001
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm]
+	Embedding size: 111166
+Generate numpy embed: (111166, 300)
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'predict'] in PREDICT.
+[./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt]
+	Data size: 114418
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/WikiPassageQA_LNC2_TEST/relation_test.txt', u'vocab_size': 111166, u'use_dpool': False, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'embed_path': u'./data/WikiPassageQA_LNC2_TEST/embed_glove_d300_norm', u'text1_maxlen': 20, u'phase': u'PREDICT', 'embed': array([[-0.035561,  0.037646, -0.057493, ..., -0.026155, -0.090546,
+         0.080035],
+       [-0.007506,  0.105635, -0.042531, ...,  0.022972,  0.047879,
+         0.044536],
+       [-0.035648,  0.035573, -0.092225, ..., -0.036012,  0.04055 ,
+         0.024583],
+       ...,
+       [ 0.095756,  0.077891,  0.012054, ..., -0.021931, -0.065531,
+        -0.016991],
+       [ 0.076127, -0.027156,  0.099034, ..., -0.048247, -0.065637,
+         0.11426 ],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': True, u'text2_maxlen': 250}
+[./data/WikiPassageQA_LNC2_TEST/relation_test.txt]
+	Instance size: 95464
+List Instance Count: 414
+[ListGenerator] init done
+[KNRM] init done
+[layer]: Input	[shape]: [None, 20] 
+20.0% memory has been used
+[layer]: Input	[shape]: [None, 250] 
+20.0% memory has been used
+[layer]: Embedding	[shape]: [None, 20, 300] 
+20.1% memory has been used
+[layer]: Embedding	[shape]: [None, 250, 300] 
+20.1% memory has been used
+[layer]: Dot	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Exponent of mm:	[shape]: [None, 20, 250] 
+20.1% memory has been used
+[layer]: Sum of document	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Logarithm of sum	[shape]: [None, 20] 
+20.1% memory has been used
+[layer]: Sum of all exponent	[shape]: [None] 
+20.1% memory has been used
+[layer]: Stack	[shape]: [None, 21] 
+20.1% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+20.1% memory has been used

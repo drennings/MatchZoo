@@ -1,0 +1,297 @@
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "Triletter_ListGenerator", 
+      "batch_list": 10, 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_test.txt", 
+      "dtype": "dssm"
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "Triletter_ListGenerator", 
+      "batch_list": 10, 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_test.txt", 
+      "dtype": "dssm"
+    }, 
+    "train": {
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_train.txt", 
+      "input_type": "Triletter_PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "dtype": "dssm", 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 111166, 
+      "embed_size": 50, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt", 
+      "word_triletter_map_file": "./data/WikiPassageQA_LNC2_TEST/word_triletter_map.txt"
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "Triletter_ListGenerator", 
+      "batch_list": 10, 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_valid.txt", 
+      "dtype": "dssm"
+    }
+  }, 
+  "global": {
+    "optimizer": "adam", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 0.001, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/wikipassageqa_lnc2_test/weights/dssm.wikipassageqa_lnc2_test.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.dssm.wikipassageqa_lnc2_test.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "ndcg@3", 
+    "ndcg@5", 
+    "map"
+  ], 
+  "net_name": "DSSM", 
+  "model": {
+    "model_py": "dssm.DSSM", 
+    "setting": {
+      "dropout_rate": 0.9, 
+      "hidden_sizes": [
+        300
+      ]
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'train'] in TRAIN, [u'test', u'valid'] in EVAL.
+[./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt]
+	Data size: 114418
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/WikiPassageQA_LNC2_TEST/relation_train.txt', u'vocab_size': 111166, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'Triletter_PairGenerator', u'text1_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'batch_size': 100, u'batch_per_iter': 5, u'text2_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'word_triletter_map_file': u'./data/WikiPassageQA_LNC2_TEST/word_triletter_map.txt', u'dtype': u'dssm', u'phase': u'TRAIN', 'embed': array([[-0.18291523, -0.00574826, -0.13887608, ..., -0.03456349,
+         0.10058585,  0.15525076],
+       [-0.01294214,  0.08529575, -0.1892907 , ...,  0.04963925,
+        -0.11150367,  0.02667126],
+       [ 0.19042659,  0.09277846, -0.10941583, ...,  0.16021279,
+        -0.14250447, -0.0654474 ],
+       ...,
+       [-0.15601937, -0.1410662 , -0.17606659, ...,  0.18587849,
+         0.03021471, -0.15059894],
+       [-0.11222062, -0.07933922,  0.05269746, ..., -0.16296534,
+        -0.01688636,  0.1576698 ],
+       [-0.19695637, -0.05601741, -0.14086695, ...,  0.05617103,
+         0.05194598,  0.16053513]], dtype=float32), u'query_per_iter': 50, u'use_iter': False}
+[./data/WikiPassageQA_LNC2_TEST/relation_train.txt]
+	Instance size: 193900
+Pair Instance Count: 320348
+[Triletter_PairGenerator] init done
+{u'relation_file': u'./data/WikiPassageQA_LNC2_TEST/relation_test.txt', u'vocab_size': 111166, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'Triletter_ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'word_triletter_map_file': u'./data/WikiPassageQA_LNC2_TEST/word_triletter_map.txt', u'dtype': u'dssm', u'phase': u'EVAL', 'embed': array([[-0.18291523, -0.00574826, -0.13887608, ..., -0.03456349,
+         0.10058585,  0.15525076],
+       [-0.01294214,  0.08529575, -0.1892907 , ...,  0.04963925,
+        -0.11150367,  0.02667126],
+       [ 0.19042659,  0.09277846, -0.10941583, ...,  0.16021279,
+        -0.14250447, -0.0654474 ],
+       ...,
+       [-0.15601937, -0.1410662 , -0.17606659, ...,  0.18587849,
+         0.03021471, -0.15059894],
+       [-0.11222062, -0.07933922,  0.05269746, ..., -0.16296534,
+        -0.01688636,  0.1576698 ],
+       [-0.19695637, -0.05601741, -0.14086695, ...,  0.05617103,
+         0.05194598,  0.16053513]], dtype=float32)}
+[./data/WikiPassageQA_LNC2_TEST/relation_test.txt]
+	Instance size: 95464
+List Instance Count: 414
+[Triletter_ListGenerator] init done
+{u'relation_file': u'./data/WikiPassageQA_LNC2_TEST/relation_valid.txt', u'vocab_size': 111166, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'Triletter_ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'word_triletter_map_file': u'./data/WikiPassageQA_LNC2_TEST/word_triletter_map.txt', u'dtype': u'dssm', u'phase': u'EVAL', 'embed': array([[-0.18291523, -0.00574826, -0.13887608, ..., -0.03456349,
+         0.10058585,  0.15525076],
+       [-0.01294214,  0.08529575, -0.1892907 , ...,  0.04963925,
+        -0.11150367,  0.02667126],
+       [ 0.19042659,  0.09277846, -0.10941583, ...,  0.16021279,
+        -0.14250447, -0.0654474 ],
+       ...,
+       [-0.15601937, -0.1410662 , -0.17606659, ...,  0.18587849,
+         0.03021471, -0.15059894],
+       [-0.11222062, -0.07933922,  0.05269746, ..., -0.16296534,
+        -0.01688636,  0.1576698 ],
+       [-0.19695637, -0.05601741, -0.14086695, ...,  0.05617103,
+         0.05194598,  0.16053513]], dtype=float32)}
+[./data/WikiPassageQA_LNC2_TEST/relation_valid.txt]
+	Instance size: 25723
+List Instance Count: 415
+[Triletter_ListGenerator] init done
+[DSSM] init done
+[layer]: Input	[shape]: [None, 111166] 
+19.2% memory has been used
+[layer]: Input	[shape]: [None, 111166] 
+19.2% memory has been used
+[layer]: MLP	[shape]: [None, 300] 
+19.2% memory has been used
+[layer]: MLP	[shape]: [None, 300] 
+19.2% memory has been used
+[layer]: Dot	[shape]: [None, 1] 
+19.2% memory has been used
+[Model] Model Compile Done.
+[10-04-2018 02:22:34]	[Train:train] Iter:0	loss=0.821326
+[10-04-2018 02:22:42]	[Eval:test] Iter:0	ndcg@3=0.260870	map=0.312949	ndcg@5=0.262903
+[10-04-2018 02:28:21]	[Eval:valid] Iter:0	ndcg@3=0.309263	map=0.342568	ndcg@5=0.353455
+[10-04-2018 02:28:51]	[Train:train] Iter:1	loss=0.680084
+[10-04-2018 02:28:57]	[Eval:test] Iter:1	ndcg@3=0.262718	map=0.307502	ndcg@5=0.262944
+[10-04-2018 02:34:36]	[Eval:valid] Iter:1	ndcg@3=0.274441	map=0.319309	ndcg@5=0.317801
+[10-04-2018 02:35:07]	[Train:train] Iter:2	loss=0.638362
+[10-04-2018 02:35:13]	[Eval:test] Iter:2	ndcg@3=0.245662	map=0.300700	ndcg@5=0.250512
+[10-04-2018 02:40:53]	[Eval:valid] Iter:2	ndcg@3=0.275523	map=0.323233	ndcg@5=0.326364
+[10-04-2018 02:41:26]	[Train:train] Iter:3	loss=0.605772
+[10-04-2018 02:41:30]	[Eval:test] Iter:3	ndcg@3=0.232599	map=0.298815	ndcg@5=0.240025
+[10-04-2018 02:47:10]	[Eval:valid] Iter:3	ndcg@3=0.278449	map=0.321600	ndcg@5=0.323794
+[10-04-2018 02:47:42]	[Train:train] Iter:4	loss=0.577694
+[10-04-2018 02:47:48]	[Eval:test] Iter:4	ndcg@3=0.243246	map=0.303022	ndcg@5=0.249335
+[10-04-2018 02:53:25]	[Eval:valid] Iter:4	ndcg@3=0.282701	map=0.325796	ndcg@5=0.328308
+[10-04-2018 02:53:58]	[Train:train] Iter:5	loss=0.514070
+[10-04-2018 02:54:03]	[Eval:test] Iter:5	ndcg@3=0.236715	map=0.304750	ndcg@5=0.242982
+[10-04-2018 02:59:42]	[Eval:valid] Iter:5	ndcg@3=0.276052	map=0.319178	ndcg@5=0.325890
+[10-04-2018 03:00:15]	[Train:train] Iter:6	loss=0.496906
+[10-04-2018 03:00:19]	[Eval:test] Iter:6	ndcg@3=0.232599	map=0.303610	ndcg@5=0.239069
+[10-04-2018 03:06:03]	[Eval:valid] Iter:6	ndcg@3=0.263170	map=0.308025	ndcg@5=0.306681
+[10-04-2018 03:06:35]	[Train:train] Iter:7	loss=0.498668
+[10-04-2018 03:06:40]	[Eval:test] Iter:7	ndcg@3=0.246377	map=0.314326	ndcg@5=0.251071
+[10-04-2018 03:12:21]	[Eval:valid] Iter:7	ndcg@3=0.286088	map=0.323761	ndcg@5=0.321333
+[10-04-2018 03:12:54]	[Train:train] Iter:8	loss=0.495581
+[10-04-2018 03:12:59]	[Eval:test] Iter:8	ndcg@3=0.258306	map=0.321211	ndcg@5=0.263179
+[10-04-2018 03:18:40]	[Eval:valid] Iter:8	ndcg@3=0.281702	map=0.329051	ndcg@5=0.323724
+[10-04-2018 03:19:12]	[Train:train] Iter:9	loss=0.476732
+[10-04-2018 03:19:17]	[Eval:test] Iter:9	ndcg@3=0.235851	map=0.312079	ndcg@5=0.244131
+[10-04-2018 03:22:49]	[Eval:valid] Iter:9	ndcg@3=0.264335	map=0.312854	ndcg@5=0.310160
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "Triletter_ListGenerator", 
+      "batch_list": 10, 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_test.txt", 
+      "dtype": "dssm"
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "Triletter_ListGenerator", 
+      "batch_list": 10, 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_test.txt", 
+      "dtype": "dssm"
+    }, 
+    "train": {
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_train.txt", 
+      "input_type": "Triletter_PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "dtype": "dssm", 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 111166, 
+      "embed_size": 50, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt", 
+      "word_triletter_map_file": "./data/WikiPassageQA_LNC2_TEST/word_triletter_map.txt"
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "Triletter_ListGenerator", 
+      "batch_list": 10, 
+      "relation_file": "./data/WikiPassageQA_LNC2_TEST/relation_valid.txt", 
+      "dtype": "dssm"
+    }
+  }, 
+  "global": {
+    "optimizer": "adam", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 0.001, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/wikipassageqa_lnc2_test/weights/dssm.wikipassageqa_lnc2_test.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.dssm.wikipassageqa_lnc2_test.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "ndcg@3", 
+    "ndcg@5", 
+    "map"
+  ], 
+  "net_name": "DSSM", 
+  "model": {
+    "model_py": "dssm.DSSM", 
+    "setting": {
+      "dropout_rate": 0.9, 
+      "hidden_sizes": [
+        300
+      ]
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'predict'] in PREDICT.
+[./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt]
+	Data size: 114418
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/WikiPassageQA_LNC2_TEST/relation_test.txt', u'vocab_size': 111166, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'Triletter_ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_LNC2_TEST/corpus_preprocessed.txt', u'word_triletter_map_file': u'./data/WikiPassageQA_LNC2_TEST/word_triletter_map.txt', u'dtype': u'dssm', u'phase': u'PREDICT', 'embed': array([[-0.18291523, -0.00574826, -0.13887608, ..., -0.03456349,
+         0.10058585,  0.15525076],
+       [-0.01294214,  0.08529575, -0.1892907 , ...,  0.04963925,
+        -0.11150367,  0.02667126],
+       [ 0.19042659,  0.09277846, -0.10941583, ...,  0.16021279,
+        -0.14250447, -0.0654474 ],
+       ...,
+       [-0.15601937, -0.1410662 , -0.17606659, ...,  0.18587849,
+         0.03021471, -0.15059894],
+       [-0.11222062, -0.07933922,  0.05269746, ..., -0.16296534,
+        -0.01688636,  0.1576698 ],
+       [-0.19695637, -0.05601741, -0.14086695, ...,  0.05617103,
+         0.05194598,  0.16053513]], dtype=float32)}
+[./data/WikiPassageQA_LNC2_TEST/relation_test.txt]
+	Instance size: 95464
+List Instance Count: 414
+[Triletter_ListGenerator] init done
+[DSSM] init done
+[layer]: Input	[shape]: [None, 111166] 
+19.0% memory has been used
+[layer]: Input	[shape]: [None, 111166] 
+19.0% memory has been used
+[layer]: MLP	[shape]: [None, 300] 
+19.0% memory has been used
+[layer]: MLP	[shape]: [None, 300] 
+19.0% memory has been used
+[layer]: Dot	[shape]: [None, 1] 
+19.0% memory has been used
