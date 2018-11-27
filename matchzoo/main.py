@@ -143,16 +143,50 @@ def train(config):
     print('[Model] Model Compile Done.', end='\n')
 
     for i_e in range(num_iters):
+        print("Printing the train_gen.items()")
+        for tag, generator in train_gen.items():
+            print(tag)
+            print(generator)
+            #for tag in generator:
+            #    print(tag)
+                #print(len(item))
+           #     for subitem in item:
+           #         print(len(subitem))
+           #         break
         for tag, generator in train_gen.items():
             genfun = generator.get_batch_generator()
-			print("Printing a generator")
-			for entry in genfun:
+            print("Printing a generator")
+	    for entry in genfun:
                 print(entry)
-			genfun = generator.get_batch_generator()
-			print("Printing another generator, to see if it's the same")
-            for entry in genfun:
-                print(entry)
-			genfun = generator.get_batch_generator()
+                collection = entry[0]
+                labels = entry[1]
+                for tag, content in collection.items():
+                    print(tag)
+                    print(content)
+                    print("len("+str(tag)+")")
+                    print(len(content))
+                    if tag == "doc" or tag == "query":
+                        print("len(content[0])")
+                        print(len(content[0]))
+                print("labels")
+                print(labels)
+                print("2 in labels")
+                print(2 in labels)
+                print("1 in labels")
+                print(1 in labels)
+                print("0 in labels")
+                print(0 in labels)
+                break
+            genfun2 = generator.get_batch_generator()
+            #print("Printing another generator, to see if it's the same")
+            #for entry in genfun:
+            #    print(entry)
+            #    break
+            #print("Printing the length of the generator")
+            #print(sum(1 for x in genfun2))
+            print("Checking if genfun and genfun2 are the same, i.e. if generator.get_batch_generator() is static")
+            print(genfun == genfun2)
+            genfun = generator.get_batch_generator()
 			
             print('[%s]\t[Train:%s] ' % (time.strftime('%m-%d-%Y %H:%M:%S', time.localtime(time.time())), tag), end='')
             history = model.fit_generator(

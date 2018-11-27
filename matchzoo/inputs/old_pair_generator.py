@@ -16,15 +16,15 @@ class PairBasicGenerator(object):
         rel_file = config['relation_file']
         self.rel = read_relation(filename=rel_file)
         self.batch_size = config['batch_size']
-        #print("self.batch_size")
-        #print(self.batch_size)
+        print("self.batch_size")
+        print(self.batch_size)
         self.check_list = ['relation_file', 'batch_size']
         self.point = 0
         if config['use_iter']:
             self.pair_list_iter = self.make_pair_iter(self.rel)
             self.pair_list = []
         else:
-            self.pair_list = self.make_pair_static(self.rel, True)
+            self.pair_list = self.make_pair_static(self.rel)
             self.pair_list_iter = None
 
     def check(self):
@@ -33,12 +33,9 @@ class PairBasicGenerator(object):
                 print('[%s] Error %s not in config' % (self.__name, e), end='\n')
                 return False
         return True
-    def make_pair_static(self, rel, labels=False):
+    def make_pair_static(self, rel):
         rel_set = {}
         pair_list = []
-        two_and_one = 0
-        two_and_zero = 0
-        one_and_zero = 0
         for label, d1, d2 in rel:
             if d1 not in rel_set:
                 rel_set[d1] = {}
@@ -48,27 +45,10 @@ class PairBasicGenerator(object):
         for d1 in rel_set:
             label_list = sorted(rel_set[d1].keys(), reverse = True)
             for hidx, high_label in enumerate(label_list[:-1]):
-                #print("high_label")
-                #print(high_label)
                 for low_label in label_list[hidx+1:]:
-                    #print("low_label")
-                    #print(low_label)
-                    #break
-                #break
                     for high_d2 in rel_set[d1][high_label]:
                         for low_d2 in rel_set[d1][low_label]:
                             pair_list.append( (d1, high_d2, low_d2) )
-                            if labels:
-                                if int(high_label) == 2:
-                                    if int(low_label) == 1:
-                                        two_and_one += 1
-                                    else:
-                                        two_and_zero += 1
-                                else:
-                                    one_and_zero += 1
-        if labels:
-            print("two_and_one", "two_and_zero", "one_and_zero")
-            print(two_and_one, two_and_zero, one_and_zero)
         print('Pair Instance Count:', len(pair_list), end='\n')
         return pair_list
 
