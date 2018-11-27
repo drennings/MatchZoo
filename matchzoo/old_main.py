@@ -145,15 +145,6 @@ def train(config):
     for i_e in range(num_iters):
         for tag, generator in train_gen.items():
             genfun = generator.get_batch_generator()
-			print("Printing a generator")
-			for entry in genfun:
-                print(entry)
-			genfun = generator.get_batch_generator()
-			print("Printing another generator, to see if it's the same")
-            for entry in genfun:
-                print(entry)
-			genfun = generator.get_batch_generator()
-			
             print('[%s]\t[Train:%s] ' % (time.strftime('%m-%d-%Y %H:%M:%S', time.localtime(time.time())), tag), end='')
             history = model.fit_generator(
                     genfun,
