@@ -1,0 +1,208 @@
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_TFC1_ALL/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_TFC1_ALL/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "train": {
+      "relation_file": "./data/WikiPassageQA_TFC1_ALL/relation_train.txt", 
+      "input_type": "PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 111166, 
+      "use_dpool": false, 
+      "embed_size": 50, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/WikiPassageQA_TFC1_ALL/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/WikiPassageQA_TFC1_ALL/corpus_preprocessed.txt", 
+      "embed_path": "./data/WikiPassageQA_TFC1_ALL/embed_glove_d50_norm", 
+      "text1_maxlen": 20, 
+      "train_embed": false, 
+      "text2_maxlen": 250
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/WikiPassageQA_TFC1_ALL/relation_valid.txt", 
+      "batch_list": 10
+    }
+  }, 
+  "global": {
+    "optimizer": "adam", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 0.001, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/wikipassageqa_tfc1_all/weights/duet.wikipassageqa.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.duet.wikipassageqa_tfc1_all.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "ndcg@3", 
+    "ndcg@5", 
+    "map"
+  ], 
+  "net_name": "DUET", 
+  "model": {
+    "model_py": "duet.DUET", 
+    "setting": {
+      "dm_hidden_sizes": [
+        30
+      ], 
+      "dm_d_mpool": 3, 
+      "lm_kernel_count": 32, 
+      "dm_dropout_rate": 0.5, 
+      "dm_kernel_count": 32, 
+      "lm_dropout_rate": 0.5, 
+      "dm_q_hidden_size": 32, 
+      "dm_kernel_size": 3, 
+      "lm_hidden_sizes": [
+        30
+      ]
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[./data/WikiPassageQA_TFC1_ALL/embed_glove_d50_norm]
+	Embedding size: 111166
+Generate numpy embed: (111166, 50)
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'train'] in TRAIN, [u'test', u'valid'] in EVAL.
+[./data/WikiPassageQA_TFC1_ALL/corpus_preprocessed.txt]
+	Data size: 86724
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/WikiPassageQA_TFC1_ALL/relation_train.txt', u'vocab_size': 111166, u'query_per_iter': 50, u'use_dpool': False, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'PairGenerator', u'text1_corpus': u'./data/WikiPassageQA_TFC1_ALL/corpus_preprocessed.txt', u'batch_size': 100, u'batch_per_iter': 5, u'text2_corpus': u'./data/WikiPassageQA_TFC1_ALL/corpus_preprocessed.txt', u'embed_path': u'./data/WikiPassageQA_TFC1_ALL/embed_glove_d50_norm', u'text1_maxlen': 20, u'phase': u'TRAIN', 'embed': array([[ 0.031484,  0.074589, -0.0457  , ...,  0.089434, -0.017444,
+         0.025027],
+       [ 0.084407,  0.011139, -0.019698, ...,  0.099151, -0.04675 ,
+         0.116482],
+       [ 0.056211,  0.004034,  0.010887, ...,  0.160106,  0.02161 ,
+         0.114171],
+       ...,
+       [-0.118232, -0.052748,  0.212667, ..., -0.120879,  0.073814,
+        -0.008432],
+       [ 0.169429,  0.040745,  0.05822 , ...,  0.116224,  0.055598,
+         0.031113],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 250, u'use_iter': False}
+[./data/WikiPassageQA_TFC1_ALL/relation_train.txt]
+	Instance size: 193900
+Pair Instance Count: 1414904
+[PairGenerator] init done
+{u'relation_file': u'./data/WikiPassageQA_TFC1_ALL/relation_test.txt', u'vocab_size': 111166, u'use_dpool': False, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_TFC1_ALL/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_TFC1_ALL/corpus_preprocessed.txt', u'embed_path': u'./data/WikiPassageQA_TFC1_ALL/embed_glove_d50_norm', u'text1_maxlen': 20, u'phase': u'EVAL', 'embed': array([[ 0.031484,  0.074589, -0.0457  , ...,  0.089434, -0.017444,
+         0.025027],
+       [ 0.084407,  0.011139, -0.019698, ...,  0.099151, -0.04675 ,
+         0.116482],
+       [ 0.056211,  0.004034,  0.010887, ...,  0.160106,  0.02161 ,
+         0.114171],
+       ...,
+       [-0.118232, -0.052748,  0.212667, ..., -0.120879,  0.073814,
+        -0.008432],
+       [ 0.169429,  0.040745,  0.05822 , ...,  0.116224,  0.055598,
+         0.031113],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 250}
+[./data/WikiPassageQA_TFC1_ALL/relation_test.txt]
+	Instance size: 23866
+List Instance Count: 414
+[ListGenerator] init done
+{u'relation_file': u'./data/WikiPassageQA_TFC1_ALL/relation_valid.txt', u'vocab_size': 111166, u'use_dpool': False, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/WikiPassageQA_TFC1_ALL/corpus_preprocessed.txt', u'text2_corpus': u'./data/WikiPassageQA_TFC1_ALL/corpus_preprocessed.txt', u'embed_path': u'./data/WikiPassageQA_TFC1_ALL/embed_glove_d50_norm', u'text1_maxlen': 20, u'phase': u'EVAL', 'embed': array([[ 0.031484,  0.074589, -0.0457  , ...,  0.089434, -0.017444,
+         0.025027],
+       [ 0.084407,  0.011139, -0.019698, ...,  0.099151, -0.04675 ,
+         0.116482],
+       [ 0.056211,  0.004034,  0.010887, ...,  0.160106,  0.02161 ,
+         0.114171],
+       ...,
+       [-0.118232, -0.052748,  0.212667, ..., -0.120879,  0.073814,
+        -0.008432],
+       [ 0.169429,  0.040745,  0.05822 , ...,  0.116224,  0.055598,
+         0.031113],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 250}
+[./data/WikiPassageQA_TFC1_ALL/relation_valid.txt]
+	Instance size: 25723
+List Instance Count: 415
+[ListGenerator] init done
+[DUET] init done
+[layer]: Input	[shape]: [None, 20] 
+70.1% memory has been used
+[layer]: Input	[shape]: [None, 250] 
+70.1% memory has been used
+[layer]: Embedding	[shape]: [None, 20, 50] 
+70.2% memory has been used
+[layer]: Embedding	[shape]: [None, 250, 50] 
+70.2% memory has been used
+[layer]: XOR	[shape]: [None, 20, 250] 
+70.2% memory has been used
+[layer]: Conv1D	[shape]: [None, 20, 32] 
+70.2% memory has been used
+[layer]: Dropout	[shape]: [None, 20, 32] 
+70.2% memory has been used
+[layer]: Reshape	[shape]: [None, None] 
+70.2% memory has been used
+[layer]: Dense	[shape]: [None, 30] 
+70.2% memory has been used
+[layer]: Dropout	[shape]: [None, 30] 
+70.1% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+70.1% memory has been used
+[layer]: Conv1D	[shape]: [None, 20, 32] 
+70.1% memory has been used
+[layer]: Dropout	[shape]: [None, 20, 32] 
+70.1% memory has been used
+[layer]: MaxPooling1D	[shape]: [None, 1, 32] 
+70.1% memory has been used
+[layer]: Reshape	[shape]: [None, None] 
+70.1% memory has been used
+[layer]: Dense	[shape]: [None, 32] 
+70.1% memory has been used
+[layer]: Conv1D	[shape]: [None, 250, 32] 
+70.1% memory has been used
+[layer]: Dropout	[shape]: [None, 250, 32] 
+70.1% memory has been used
+[layer]: MaxPooling1D	[shape]: [None, 83, 32] 
+70.1% memory has been used
+[layer]: Conv1D	[shape]: [None, 83, 32] 
+70.1% memory has been used
+[layer]: Dropout	[shape]: [None, 83, 32] 
+70.1% memory has been used
+[layer]: HadamarDot	[shape]: [None, 83, 32] 
+70.1% memory has been used
+[layer]: Reshape	[shape]: [None, None] 
+70.1% memory has been used
+[layer]: Dense	[shape]: [None, 30] 
+70.1% memory has been used
+[layer]: Dropout	[shape]: [None, 30] 
+70.1% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+70.1% memory has been used
+[layer]: Add	[shape]: [None, 1] 
+70.1% memory has been used
+[Model] Model Compile Done.
+[10-23-2018 13:18:47]	[Train:train] 
