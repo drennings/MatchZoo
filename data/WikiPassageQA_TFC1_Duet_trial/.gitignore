@@ -1,6 +1,7 @@
 *.zip
 *.txt
 embed*
-*.tsv
 *.p
 *.json
+/WikiPassageQA
+/WikiPassageQAoldd
