@@ -47,6 +47,8 @@ class PairBasicGenerator(object):
             rel_set[d1][label].append(d2)
         for d1 in rel_set:
             label_list = sorted(rel_set[d1].keys(), reverse = True)
+            #print("Label_list")
+            #print(label_list)
             for hidx, high_label in enumerate(label_list[:-1]):
                 #print("high_label")
                 #print(high_label)
@@ -57,7 +59,17 @@ class PairBasicGenerator(object):
                 #break
                     for high_d2 in rel_set[d1][high_label]:
                         for low_d2 in rel_set[d1][low_label]:
-                            pair_list.append( (d1, high_d2, low_d2) )
+                            delta = -1
+                            if int(low_label) == 1:
+                                if ";" in low_d2:
+                                    low_d2 = low_d2.split(";")[0]
+                            elif int(high_label) == 1:
+                                if ";" in high_d2:
+                                    high_low_delta_d2 = high_d2.split(";")
+                                    high_d2 = high_low_d2[0]
+                                    low_d2 = high_low_d2[1]
+                                    delta = high_low_delta_d2[2]   
+                            pair_list.append( (d1, high_d2, low_d2, delta) )
                             if labels:
                                 if int(high_label) == 2:
                                     if int(low_label) == 1:
@@ -144,7 +156,7 @@ class PairGenerator(PairBasicGenerator):
         X1[:] = self.fill_word
         X2[:] = self.fill_word
         for i in range(self.batch_size):
-            d1, d2p, d2n = random.choice(self.pair_list)
+            d1, d2p, d2n, delta = random.choice(self.pair_list)
             d1_cont = list(self.data1[d1])
             d2p_cont = list(self.data2[d2p])
             d2n_cont = list(self.data2[d2n])
