@@ -9,6 +9,12 @@ from preprocess import cal_hist
 from rank_io import *
 
 if __name__ == '__main__':
+    rel_contains_delta = False
+    if f len(sys.argv) > 1:
+        print("Found" + sys.argv[2])
+        print("Ignoring the delta values in rel file")
+        rel_contains_delta = True
+
     hist_size = int(sys.argv[1])
     srcdir = './'
     embedfile = srcdir + 'embed_glove_d300_norm'
@@ -33,19 +39,42 @@ if __name__ == '__main__':
 
     corpus, _ = read_data(corpusfile)
     print('read corpus finished....')
-    for idx, relfile in enumerate(relfiles):
-        histfile = histfiles[idx]
-        rel = read_relation(relfile)
-        fout = open(histfile, 'w')
-        for label, d1, d2 in rel:
-            assert d1 in corpus
-            assert d2 in corpus
-            qnum = len(corpus[d1])
-            d1_embed = embed[corpus[d1]]
-            d2_embed = embed[corpus[d2]]
-            curr_hist = cal_hist(d1_embed, d2_embed, qnum, hist_size)
-            curr_hist = curr_hist.tolist()
-            fout.write(' '.join(map(str, curr_hist)))
-            fout.write('\n')
-        fout.close()
+
+
+    if rel_contains_delta:
+
+        for idx, relfile in enumerate(relfiles):
+            histfile = histfiles[idx]
+            rel = read_relation(relfile)
+            fout = open(histfile, 'w')
+            for label, d1, d2, delta in rel: #make sure we extract delta
+                d2 = d2.split(";")[0] #and only maintain the original d2
+                if label > 0:
+                    label = 1
+                assert d1 in corpus
+                assert d2 in corpus
+                qnum = len(corpus[d1])
+                d1_embed = embed[corpus[d1]]
+                d2_embed = embed[corpus[d2]]
+                curr_hist = cal_hist(d1_embed, d2_embed, qnum, hist_size)
+                curr_hist = curr_hist.tolist()
+                fout.write(' '.join(map(str, curr_hist)))
+                fout.write('\n')
+            fout.close()
+     else:
+        for idx, relfile in enumerate(relfiles):
+            histfile = histfiles[idx]
+            rel = read_relation(relfile)
+            fout = open(histfile, 'w')
+            for label, d1, d2 in rel:
+                assert d1 in corpus
+                assert d2 in corpus
+                qnum = len(corpus[d1])
+                d1_embed = embed[corpus[d1]]
+                d2_embed = embed[corpus[d2]]
+                curr_hist = cal_hist(d1_embed, d2_embed, qnum, hist_size)
+                curr_hist = curr_hist.tolist()
+                fout.write(' '.join(map(str, curr_hist)))
+                fout.write('\n')
+            fout.close()
     print('generate histogram finished ...')

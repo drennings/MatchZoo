@@ -31,7 +31,7 @@ python multigrade_axiomatic_data.py
 # generate data bin sums for anmm model
 # generate idf file
 #cat word_stats.txt | cut -d ' ' -f 1,4 > embed.idf
-python gen_hist4drmm.py 60
+python gen_hist4drmm.py 60 "delta_warning"
 python gen_binsum4anmm.py 20 # the default number of bin is 20
 
 echo "Done ..."
