@@ -18,7 +18,7 @@
 python transfer_to_mz_format.py
 # generate the mz-datasets
 python prepare_mz_data.py
-
+# extend datasets with axiomatic multigrading data
 python multigrade_axiomatic_data.py
 
 # generate word embedding
@@ -32,6 +32,6 @@ python multigrade_axiomatic_data.py
 # generate idf file
 #cat word_stats.txt | cut -d ' ' -f 1,4 > embed.idf
 python gen_hist4drmm.py 60 "delta_warning"
-python gen_binsum4anmm.py 20 # the default number of bin is 20
+python gen_binsum4anmm.py 20 "delta_warning" # the default number of bin is 20
 
 echo "Done ..."
