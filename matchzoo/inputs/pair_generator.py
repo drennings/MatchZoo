@@ -381,7 +381,7 @@ class DRMM_PairGenerator(PairBasicGenerator):
         Y[::2] = 1
         X1[:] = self.fill_word
         for i in range(self.batch_size):
-            d1, d2p, d2n = random.choice(self.pair_list)
+            d1, d2p, d2n, delta = random.choice(self.pair_list)
             d1_cont = list(self.data1[d1])
             d2p_cont = list(self.data2[d2p])
             d2n_cont = list(self.data2[d2n])
