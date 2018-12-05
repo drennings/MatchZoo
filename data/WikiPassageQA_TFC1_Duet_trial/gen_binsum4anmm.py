@@ -14,6 +14,12 @@ from rank_io import *
 
 
 if __name__ == '__main__':
+    rel_contains_delta = False
+    if len(sys.argv) > 1:
+        print("Found " + sys.argv[2])
+        print("Ignoring the delta values in rel file")
+        rel_contains_delta = True
+
     bin_num = int(sys.argv[1])
     srcdir = './'
     embedfile = srcdir + 'embed_glove_d300_norm'
@@ -38,19 +44,41 @@ if __name__ == '__main__':
 
     corpus, _ = read_data(corpusfile)
     print('read corpus finished....')
-    for idx, relfile in enumerate(relfiles):
-        binfile = binfiles[idx]
-        rel = read_relation(relfile)
-        fout = open(binfile, 'w')
-        for label, d1, d2 in rel:
-            assert d1 in corpus
-            assert d2 in corpus
-            qnum = len(corpus[d1])
-            d1_embed = embed[corpus[d1]]
-            d2_embed = embed[corpus[d2]]
-            curr_bin_sum = cal_binsum(d1_embed, d2_embed, qnum, bin_num)
-            curr_bin_sum = curr_bin_sum.tolist()
-            fout.write(' '.join(map(str, curr_bin_sum)))
-            fout.write('\n')
-        fout.close()
+
+    if rel_contains_delta:
+        for idx, relfile in enumerate(relfiles):
+            binfile = binfiles[idx]
+            rel = read_relation(relfile)
+            fout = open(binfile, 'w')
+            for label, d1, d2 in rel:
+                if ";" in d2:
+                    d2 = d2.split(";")[0] #and only maintain the original d2
+                if label > 0:
+                    label = 1
+                assert d1 in corpus
+                assert d2 in corpus
+                qnum = len(corpus[d1])
+                d1_embed = embed[corpus[d1]]
+                d2_embed = embed[corpus[d2]]
+                curr_bin_sum = cal_binsum(d1_embed, d2_embed, qnum, bin_num)
+                curr_bin_sum = curr_bin_sum.tolist()
+                fout.write(' '.join(map(str, curr_bin_sum)))
+                fout.write('\n')
+            fout.close()
+    else:
+        for idx, relfile in enumerate(relfiles):
+            binfile = binfiles[idx]
+            rel = read_relation(relfile)
+            fout = open(binfile, 'w')
+            for label, d1, d2 in rel:
+                assert d1 in corpus
+                assert d2 in corpus
+                qnum = len(corpus[d1])
+                d1_embed = embed[corpus[d1]]
+                d2_embed = embed[corpus[d2]]
+                curr_bin_sum = cal_binsum(d1_embed, d2_embed, qnum, bin_num)
+                curr_bin_sum = curr_bin_sum.tolist()
+                fout.write(' '.join(map(str, curr_bin_sum)))
+                fout.write('\n')
+            fout.close()
     print('generate bin sum finished ...')
