@@ -1,6 +1,7 @@
 import shutil
 import os
 import csv
+#import unicode
 
 def read_all_p_rels(path_to_prels):
     all_p_rels = {}
@@ -39,19 +40,28 @@ def extend_rel_file_with_p_rels(filepath, all_p_rels):
                 #print(line)
                 label, q_id, doc_id = line.strip().split(" ")
                 new_doc_id = doc_id
+                doc_id_u = unicode(doc_id, "utf-8")
                 #print(label)
                 #print(type(q_id))
                 #print(doc_id)
                 # adapt line if it has axiomatic rels
                 if int(label) > 0:
                     #print("Label > 0")
-                    print(q_id)
+                    #print(q_id)
                     if q_id in all_p_rels.keys():
                         #print(q_id)
-                        print("q_id in p_rels")
+                        #print("q_id in p_rels")
                         p_rels_for_q = all_p_rels[q_id]
+                        print("Looking for ")
+                        print(doc_id_u)
+                        print(p_rels_for_q)
                         for doc_id_1,doc_id_2, delta in p_rels_for_q:
-                            if doc_id_1 == doc_id:
+                            #print(doc_id_1, doc_id_2, delta)
+                            #print(doc_id)
+                            if doc_id_2 == doc_id_u:
+                                print("Atleast I found a match")
+                            if doc_id_1 == doc_id_u:
+                                print("found line to add")
                                 new_doc_id += ";" + doc_id_1 + ";" + delta
                 line_to_write = label + " " + q_id + " " + new_doc_id + "\n"
 
@@ -67,8 +77,8 @@ if __name__ == '__main__':
     print("Found " + str(len(all_p_rels)) + " p_rels")
     for filepath in infiles:
         extend_rel_file_with_p_rels(filepath, all_p_rels)
-    for val in all_p_rels.keys():
-        print(val)
+    #for val in all_p_rels.keys():
+    #    print(val)
         #break
-    print(q_id)
+    #print(q_id)
     print("Finished extending rel files with axiomatic rels")
