@@ -40,7 +40,7 @@ def extend_rel_file_with_p_rels(filepath, all_p_rels):
                 #print(line)
                 label, q_id, doc_id = line.strip().split(" ")
                 new_doc_id = doc_id
-                doc_id_u = unicode(doc_id, "utf-8")
+                #doc_id_u = unicode(doc_id, "utf-8")
                 #print(label)
                 #print(type(q_id))
                 #print(doc_id)
@@ -52,17 +52,18 @@ def extend_rel_file_with_p_rels(filepath, all_p_rels):
                         #print(q_id)
                         #print("q_id in p_rels")
                         p_rels_for_q = all_p_rels[q_id]
-                        print("Looking for ")
-                        print(doc_id_u)
-                        print(p_rels_for_q)
+                        #print("Looking for ")
+                        #print(doc_id)
+                        #print(p_rels_for_q)
+                        #break
                         for doc_id_1,doc_id_2, delta in p_rels_for_q:
                             #print(doc_id_1, doc_id_2, delta)
                             #print(doc_id)
-                            if doc_id_2 == doc_id_u:
-                                print("Atleast I found a match")
-                            if doc_id_1 == doc_id_u:
-                                print("found line to add")
-                                new_doc_id += ";" + doc_id_1 + ";" + delta
+                            #if doc_id_2 == doc_id_u:
+                            #    print("Atleast I found a match")
+                            if doc_id_1 == doc_id:#_u:
+                                #print("found line to add")
+                                new_doc_id += ";" + doc_id_2 + ";" + delta
                 line_to_write = label + " " + q_id + " " + new_doc_id + "\n"
 
                 # write new line to filepath

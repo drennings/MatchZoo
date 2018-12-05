@@ -10,8 +10,8 @@ from rank_io import *
 
 if __name__ == '__main__':
     rel_contains_delta = False
-    if f len(sys.argv) > 1:
-        print("Found" + sys.argv[2])
+    if len(sys.argv) > 1:
+        print("Found " + sys.argv[2])
         print("Ignoring the delta values in rel file")
         rel_contains_delta = True
 
@@ -47,8 +47,11 @@ if __name__ == '__main__':
             histfile = histfiles[idx]
             rel = read_relation(relfile)
             fout = open(histfile, 'w')
-            for label, d1, d2, delta in rel: #make sure we extract delta
-                d2 = d2.split(";")[0] #and only maintain the original d2
+            for label, d1, d2 in rel: #make sure we extract delta
+                #print(label,d1)
+                #print(d2)
+                if ";" in d2:
+                    d2 = d2.split(";")[0] #and only maintain the original d2
                 if label > 0:
                     label = 1
                 assert d1 in corpus
@@ -61,7 +64,7 @@ if __name__ == '__main__':
                 fout.write(' '.join(map(str, curr_hist)))
                 fout.write('\n')
             fout.close()
-     else:
+    else:
         for idx, relfile in enumerate(relfiles):
             histfile = histfiles[idx]
             rel = read_relation(relfile)
