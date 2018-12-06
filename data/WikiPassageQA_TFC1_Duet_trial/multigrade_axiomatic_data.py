@@ -70,7 +70,7 @@ def extend_rel_file_with_p_rels(filepath, all_p_rels):
                 txt_outfile.write(line_to_write)
 
 if __name__ == '__main__':
-    path_to_p_rels = "./all_matchzoo_p_rels.tsv"
+    path_to_p_rels = "./filtered_matchzoo_p_rels.tsv"
     infiles = ["./relation_train.txt", "./relation_dev.txt", "./relation_test.txt" ]
     infiles = ["./relation_train.txt"] #only use train file
     q_id = "s"
