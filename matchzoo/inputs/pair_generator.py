@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
@@ -39,12 +38,35 @@ class PairBasicGenerator(object):
         two_and_one = 0
         two_and_zero = 0
         one_and_zero = 0
+        #print(rel)
         for label, d1, d2 in rel:
+            #print(d2)
             if d1 not in rel_set:
                 rel_set[d1] = {}
             if label not in rel_set[d1]:
                 rel_set[d1][label] = []
-            rel_set[d1][label].append(d2)
+            if ";" in d2:
+                #print("Found a ; ")
+                d2_high_doc = ""
+                d2_low_doc = ""
+                for d2_entry in d2.split(";"):
+                    #print(d2_entry)
+                    if d2_high_doc == "":
+                        d2_high_doc = d2_entry
+                    else:
+                        #d2_low_doc = ""
+                        d2_delta = -1
+                        if "D" in d2_entry:
+                            #print("Found D")
+                            d2_low_doc = d2_entry
+                        else:
+                            d2_delta = d2_entry
+                            rel_set[d1][label].append(d2_high_doc + ";" + d2_low_doc + ";" + d2_delta)
+                            #print(d2_high_doc,d2_low_doc,str(d2_delta))
+            else:
+                rel_set[d1][label].append(d2)
+        print("Created rel_set")
+        #print(rel_set)
         for d1 in rel_set:
             label_list = sorted(rel_set[d1].keys(), reverse = True)
             #print("Label_list")
@@ -60,16 +82,27 @@ class PairBasicGenerator(object):
                     for high_d2 in rel_set[d1][high_label]:
                         for low_d2 in rel_set[d1][low_label]:
                             delta = -1
+                            high_d2_local = high_d2
                             if int(low_label) == 1:
                                 if ";" in low_d2:
                                     low_d2 = low_d2.split(";")[0]
                             elif int(high_label) == 1:
                                 if ";" in high_d2:
                                     high_low_delta_d2 = high_d2.split(";")
-                                    high_d2 = high_low_d2[0]
-                                    low_d2 = high_low_d2[1]
-                                    delta = high_low_delta_d2[2]   
-                            pair_list.append( (d1, high_d2, low_d2, delta) )
+                                    high_d2_local = high_low_delta_d2[0]
+                                    low_d2 = high_low_delta_d2[1]
+                                    delta = high_low_delta_d2[2]  
+                                    #print("Inner")
+                                    #print(high_d2_local)
+                            #print("Outer")
+                            #print(high_d2_local) 
+                            if ";" in high_d2_local:
+                                print("Found ; in high_d2_local")
+                                print(high_d2)
+                                print(high_d2_local)
+                                print(low_label)
+                                print(high_label)
+                            pair_list.append( (d1, high_d2_local, low_d2, delta) ) #pair_list.append( (d1, high_d2_local, low_d2, delta) )
                             if labels:
                                 if int(high_label) == 2:
                                     if int(low_label) == 1:
@@ -82,6 +115,7 @@ class PairBasicGenerator(object):
             print("two_and_one", "two_and_zero", "one_and_zero")
             print(two_and_one, two_and_zero, one_and_zero)
         print('Pair Instance Count:', len(pair_list), end='\n')
+        print(pair_list)
         return pair_list
 
     def make_pair_iter(self, rel):
@@ -157,6 +191,9 @@ class PairGenerator(PairBasicGenerator):
         X2[:] = self.fill_word
         for i in range(self.batch_size):
             d1, d2p, d2n, delta = random.choice(self.pair_list)
+            print(d1,d2p,d2n,delta)
+            #if ";" in d2p:
+            #    d2p = d2p.split(";")[0]
             d1_cont = list(self.data1[d1])
             d2p_cont = list(self.data2[d2p])
             d2n_cont = list(self.data2[d2n])
@@ -265,7 +302,9 @@ class Triletter_PairGenerator(PairBasicGenerator):
         Y[::2] = 1
         X1, X2 = [], []
         for i in range(self.batch_size):
-            d1, d2p, d2n = random.choice(self.pair_list)
+            d1, d2p, d2n, delta = random.choice(self.pair_list)
+            #if ";" in d2n:
+            #    d2n = d2n.split(";")[0]
             d1_len = len(list(self.data1[d1]))
             d2p_len = len(list(self.data2[d2p]))
             d2n_len = len(list(self.data2[d2n]))
@@ -382,6 +421,7 @@ class DRMM_PairGenerator(PairBasicGenerator):
         X1[:] = self.fill_word
         for i in range(self.batch_size):
             d1, d2p, d2n, delta = random.choice(self.pair_list)
+            
             d1_cont = list(self.data1[d1])
             d2p_cont = list(self.data2[d2p])
             d2n_cont = list(self.data2[d2n])
@@ -466,7 +506,7 @@ class PairGenerator_Feats(PairBasicGenerator):
         X1[:] = self.fill_word
         X2[:] = self.fill_word
         for i in range(self.batch_size):
-            d1, d2p, d2n = random.choice(self.pair_list)
+            d1, d2p, d2n, delta = random.choice(self.pair_list)
             d1_len = min(self.data1_maxlen, len(self.data1[d1]))
             d2p_len = min(self.data2_maxlen, len(self.data2[d2p]))
             d2n_len = min(self.data2_maxlen, len(self.data2[d2n]))
