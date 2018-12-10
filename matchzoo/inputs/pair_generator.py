@@ -91,7 +91,6 @@ class PairBasicGenerator(object):
 #                print(rel_set[d1].keys())
         print("Creating regular training data")
         for d1 in rel_set:
-            break#TODO REMOVE TODO
             #print(d1)
             #print(rel_set[d1])
             label_list = sorted(rel_set[d1].keys(), reverse = True)
@@ -238,8 +237,32 @@ class PairBasicGenerator(object):
         #pbar2.close()
         print('Pair Instance Count:', len(pair_list), end='\n')
         #print(pair_list)
-        return pair_list
+        #return pair_list
 
+        ANA_TFC1 = 0
+        NANA_TFC1 = 0
+        ANA_NAX = 0
+        #NANA_NAX = 0
+        for entry in pair_list:
+            label = entry[4]
+            if label.endswith("TFC1"):
+                if label.startswith("2"):
+                    ANA_TFC1 += 1
+                else:
+                    NANA_TFC1 += 1
+            else:
+                if label.startswith("2"):
+                    ANA_NAX += 1
+                #else:
+                #    NANA_NAX += 1
+
+        print("Axiomatic entries")
+        print("Answer, non_answer", str(ANA_TFC1))
+        print("Non_answer, non_answer", str(NANA_TFC1))
+        print("Regular entries")
+        print("Answer, non_answer", str(ANA_NAX))
+        #print("Non_answer, non_answer", str(NANA_NAX))
+        return pair_list
     def make_pair_iter(self, rel):
         rel_set = {}
         pair_list = []
@@ -312,8 +335,8 @@ class PairGenerator(PairBasicGenerator):
         X1[:] = self.fill_word
         X2[:] = self.fill_word
         for i in range(self.batch_size):
-            d1, d2p, d2n, delta = random.choice(self.pair_list)
-            print(d1,d2p,d2n,delta)
+            d1, d2p, d2n, delta,label = random.choice(self.pair_list)
+            print(d1,d2p,d2n,delta,label)
             #if ";" in d2p:
             #    d2p = d2p.split(";")[0]
             d1_cont = list(self.data1[d1])
@@ -424,7 +447,7 @@ class Triletter_PairGenerator(PairBasicGenerator):
         Y[::2] = 1
         X1, X2 = [], []
         for i in range(self.batch_size):
-            d1, d2p, d2n, delta = random.choice(self.pair_list)
+            d1, d2p, d2n, delta, label = random.choice(self.pair_list)
             #if ";" in d2n:
             #    d2n = d2n.split(";")[0]
             d1_len = len(list(self.data1[d1]))
@@ -542,7 +565,7 @@ class DRMM_PairGenerator(PairBasicGenerator):
         Y[::2] = 1
         X1[:] = self.fill_word
         for i in range(self.batch_size):
-            d1, d2p, d2n, delta = random.choice(self.pair_list)
+            d1, d2p, d2n, delta, label = random.choice(self.pair_list)
             
             d1_cont = list(self.data1[d1])
             d2p_cont = list(self.data2[d2p])
@@ -628,7 +651,7 @@ class PairGenerator_Feats(PairBasicGenerator):
         X1[:] = self.fill_word
         X2[:] = self.fill_word
         for i in range(self.batch_size):
-            d1, d2p, d2n, delta = random.choice(self.pair_list)
+            d1, d2p, d2n, delta, label = random.choice(self.pair_list)
             d1_len = min(self.data1_maxlen, len(self.data1[d1]))
             d2p_len = min(self.data2_maxlen, len(self.data2[d2p]))
             d2n_len = min(self.data2_maxlen, len(self.data2[d2n]))
