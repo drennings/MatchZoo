@@ -8,9 +8,10 @@ from utils.rank_io import *
 from layers import DynamicMaxPooling
 import scipy.sparse as sp
 import tqdm
+import gc
 
 class PairBasicGenerator(object):
-    def __init__(self, config):
+    def __init__(self, config, selfreldel=True):
         self.__name = 'PairBasicGenerator'
         self.config = config
         rel_file = config['relation_file']
@@ -26,7 +27,13 @@ class PairBasicGenerator(object):
         else:
             self.pair_list = self.make_pair_static(self.rel, True)
             self.pair_list_iter = None
-
+        if selfreldel:
+            del self.rel
+            gc.collect()
+        self.amount_of_traditional_entries = 0
+        self.traditional_ratio = 1
+        self.axiomatic_ratio = 1
+        #TODO add exception if these ratios are not possible
     def check(self):
         for e in self.check_list:
             if e not in self.config:
@@ -36,9 +43,9 @@ class PairBasicGenerator(object):
     def make_pair_static(self, rel, labels=False):
         rel_set = {}
         pair_list = []
-        two_and_one = 0
-        two_and_zero = 0
-        one_and_zero = 0
+        #two_and_one = 0
+        #two_and_zero = 0
+        #one_and_zero = 0
         #print(rel)
         for label, d1, d2 in rel:
             #print(d2)
@@ -76,19 +83,20 @@ class PairBasicGenerator(object):
                     rel_set[d1][label].append(d2)
                 #print(d2)
         print("Created rel_set")
-        print(len(rel_set.keys()))
+        #print(len(rel_set.keys()))
 
         #print(rel_set)
         pbar = tqdm.tqdm(total=len(rel_set))
-        for qid, val in rel_set.iteritems():
+        #for qid, val in rel_set.iteritems():
             #print(key)
-            for label in val:
-               if type(label) != int:
-                   print(label, type(label))
+        #    for label in val:
+        #       if type(label) != int:
+        #           print(label, type(label))
                #break
             #break
 #            if len(rel_set[d1]) != 3:
 #                print(rel_set[d1].keys())
+        ANA_NAX = 0 #counter for regular training entries
         print("Creating regular training data")
         for d1 in rel_set:
             #print(d1)
@@ -121,14 +129,16 @@ class PairBasicGenerator(object):
                             if ";" in high_d2:
                                 splitted_high_d2 = high_d2.split(";")
                                 local_high_d2 = splitted_high_d2[0]
-                                if local_low_d2 in splitted_high_d2:
-                                    continue
+                                #if local_low_d2 in splitted_high_d2:
+                                #    continue
                                     #index_of_low_d2 = splitted_high_d2.index(local_ow_d2)
                                     #delta = splitted_high_d2[index_of_low_d2+1]
                                     #axiom = "TFC1"
                             
                             #print((d1, local_high_d2, local_low_d2, delta, str(high_label)+"_"+str(low_label)+"_"+axiom))
-                            pair_list.append( (d1, local_high_d2, local_low_d2, delta, str(high_label)+"_"+str(low_label)+"_"+axiom) )
+                            pair_list.append( (d1, local_high_d2, local_low_d2) )#, delta) ) #, str(high_label)+"_"+str(low_label)+"_"+axiom) )
+                            ANA_NAX += 1
+                            #self.amount_of_traditional_entries += 1
                                     #print("Searching for 2,0 rels")
                                     #print("Found axiomatic instance, 2,0")
                                     #print(d1,high_d2,low_d2,delta)
@@ -168,7 +178,8 @@ class PairBasicGenerator(object):
                     splitted_rel = rel.split(";")
                     #print(splitted_rel)
                     #print( (d1, splitted_rel[0], splitted_rel[1], splitted_rel[2], str(label)+"_1?0"+"_"+"TFC1")  )
-                    pair_list.append( (d1, splitted_rel[0], splitted_rel[1], splitted_rel[2], str(label)+"_1?0"+"_"+"TFC1") ) 
+                    
+                    pair_list.append( (d1, splitted_rel[0], splitted_rel[1]) )#, splitted_rel[2] ) ) #, str(label)+"_1?0"+"_"+"TFC1") ) 
                     #pbar2.update(1)
             #label_lp=ist = sorted(rel_set[d1].keys(), reverse = True)
             #print("Label_list")
@@ -239,26 +250,26 @@ class PairBasicGenerator(object):
         #print(pair_list)
         #return pair_list
 
-        ANA_TFC1 = 0
-        NANA_TFC1 = 0
-        ANA_NAX = 0
+        #ANA_TFC1 = 0
+        #NANA_TFC1 = 0
+        #ANA_NAX = 0
         #NANA_NAX = 0
-        for entry in pair_list:
-            label = entry[4]
-            if label.endswith("TFC1"):
-                if label.startswith("2"):
-                    ANA_TFC1 += 1
-                else:
-                    NANA_TFC1 += 1
-            else:
-                if label.startswith("2"):
-                    ANA_NAX += 1
-                #else:
+        #for entry in pair_list:
+        #    label = entry[4]
+        #    if label.endswith("TFC1"):
+        #        if label.startswith("2"):
+        #            ANA_TFC1 += 1
+        #        else:
+        #            NANA_TFC1 += 1
+        #    else:
+        #        if label.startswith("2"):
+        #            ANA_NAX += 1
+          #else:
                 #    NANA_NAX += 1
-
-        print("Axiomatic entries")
-        print("Answer, non_answer", str(ANA_TFC1))
-        print("Non_answer, non_answer", str(NANA_TFC1))
+        #self.amount_of_traditional_entries = ANA_NAX
+        #print("Axiomatic entries")
+        #print("Answer, non_answer", str(ANA_TFC1))
+        #print("Non_answer, non_answer", str(NANA_TFC1))
         print("Regular entries")
         print("Answer, non_answer", str(ANA_NAX))
         #print("Non_answer, non_answer", str(NANA_NAX))
@@ -334,9 +345,36 @@ class PairGenerator(PairBasicGenerator):
         Y[::2] = 1
         X1[:] = self.fill_word
         X2[:] = self.fill_word
+        
+        add_traditional = True
+        added_traditional = 0
+        added_axiomatic = 0
         for i in range(self.batch_size):
-            d1, d2p, d2n, delta,label = random.choice(self.pair_list)
-            print(d1,d2p,d2n,delta,label)
+            if add_traditional:
+                #my_list = range(self.amount_of_traditional_entries)
+                #print("my_list")
+                #print(my_list)
+                my_rand_index = int(random.random() * 157053683)#156216476)#range(self.amount_of_traditional_entries))
+                #print("my_rand_index", my_rand_index)
+                #print("len_of_pair_list", str(len(self.pair_list)))
+                #d1, d2p, d2n, delta, label = self.pair_list[my_rand_index]
+                d1, d2p, d2n = self.pair_list[my_rand_index]
+                added_traditional += 1
+            else:
+                my_rand_index = int(random.random() * (len(self.pair_list)-157053683)) + 157053683#156216476)) + 156216476
+                #d1, d2p, d2n, delta, label = self.pair_list[my_rand_index]
+                d1, d2p, d2n = self.pair_list[my_rand_index]
+                added_axiomatic += 1            
+            if added_traditional >= self.traditional_ratio:
+               add_traditional = False
+               added_traditional = 0
+            elif added_axiomatic >= self.axiomatic_ratio :
+               add_traditional = True 
+               added_axiomatic = 0
+            #if i % 2 == 0:
+            #    d1, d2p, d2n, delta, label = self.pair_list[random.choice(range(self.amount_of_traditional_entries)))]
+            #d1, d2p, d2n, delta,label = random.choice(self.pair_list)
+            #print(d1,d2p,d2n,delta,label)
             #if ";" in d2p:
             #    d2p = d2p.split(";")[0]
             d1_cont = list(self.data1[d1])
