@@ -57,6 +57,7 @@ class Preparation(object):
     def parse_line_for_msmarco(self, line, delimiter="\t"):
         subs = line.split(delimiter)
         if 5 != len(subs):
+            print(subs)
             raise ValueError('format of msmarco data file wrong, should be tab separated: \'qid,docid,qtext,doctext,label\'.')
         else:
             return subs[0], subs[1], subs[2], subs[3], subs[4]
@@ -166,7 +167,7 @@ class Preparation(object):
             f.close()
         return corpus, rels_train, rels_valid, rels_test
 
- def run_with_train_valid_test_corpus_msmarco(self, train_file, valid_file, test_file):
+    def run_with_train_valid_test_corpus_msmarco(self, train_file, valid_file, test_file):
         '''
         Run with pre-splited train_file, valid_file, test_file
         The input format should be label \t text1 \t text2
@@ -199,7 +200,7 @@ class Preparation(object):
             for line in f:
                 line = line
                 line = line.strip()
-                label, q_id, q_text, t2 = self.parse_line_msmarco(line)
+                q_id, doc_id, q_text, doc_text, label = self.parse_line_for_msmarco(line)
                 #id2 = self.get_text_id(hashid, t2, 'D')
                 # generate unique query ids
                 #if q_id == curQ:

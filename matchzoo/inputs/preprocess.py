@@ -10,6 +10,7 @@ from tqdm import tqdm
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords as nltk_stopwords
 from nltk.stem import SnowballStemmer
+import re
 
 sys.path.append('../inputs')
 sys.path.append('../utils')
@@ -28,7 +29,8 @@ class Preprocess(object):
                  word_stem_config = {},
                  word_lower_config = {},
                  word_filter_config = {},
-                 word_index_config = {}
+                 word_index_config = {},
+                 char_filter_config = {}#
                  ):
         # set default configuration
         self._word_seg_config = { 'enable': True, 'lang': 'en' }
@@ -38,13 +40,15 @@ class Preprocess(object):
         self._word_filter_config = { 'enable': True, 'stop_words': nltk_stopwords.words('english'),
                                      'min_freq': 1, 'max_freq': six.MAXSIZE, 'words_useless': None }
         self._word_index_config = { 'word_dict': None }
-
+        self._char_filter_config = { 'enable': False }#
+        
         self._word_seg_config.update(word_seg_config)
         self._doc_filter_config.update(doc_filter_config)
         self._word_stem_config.update(word_stem_config)
         self._word_lower_config.update(word_lower_config)
         self._word_filter_config.update(word_filter_config)
         self._word_index_config.update(word_index_config)
+        self._char_filter_config.update(char_filter_config)#
 
         self._word_dict = self._word_index_config['word_dict']
         self._words_stats = dict()
@@ -52,7 +56,27 @@ class Preprocess(object):
     def run(self, file_path):
         print('load...')
         dids, docs = Preprocess.load(file_path)
-
+        #my_words = ["what is in ching-a-ling"]
+        #print(my_words)
+        #my_words = Preprocess.word_seg(my_words, self._word_seg_config)
+        from time import sleep
+        for i,docid in enumerate(dids):#docs:
+            if docid == "Q19985":
+                print(i)
+                print(docs[i])
+            #print(doc)
+                #sleep(100)
+        #    if len(doc.split()) < 20 and ("ching" in doc and "ling" in doc):
+        #        print(doc)
+            #print(type(doc))
+            #print(doc)
+            #for word in doc:
+            #    print(word.decode("utf-8"))
+            #my_doc = doc.decode("utf-8")
+            #print(type(my_doc))
+            #another_doc = re.sub('[^a-zA-Z0-9]+', " ", my_doc)
+            #print(another_doc)
+            #break
         if self._word_seg_config['enable']:
             print('word_seg...')
             docs = Preprocess.word_seg(docs, self._word_seg_config)
@@ -64,6 +88,10 @@ class Preprocess(object):
         if self._word_stem_config['enable']:
             print('word_stem...')
             docs = Preprocess.word_stem(docs)
+       
+        if self._char_filter_config['enable']:
+            print('char_filter...')
+            docs = Preprocess.char_filter(docs)
 
         if self._word_lower_config['enable']:
             print('word_lower...')
@@ -75,10 +103,26 @@ class Preprocess(object):
             print('word_filter...')
             docs, self._words_useless = Preprocess.word_filter(docs, self._word_filter_config, self._words_stats)
 
+        print(docs[1068145])
         print('word_index...')
         docs, self._word_dict = Preprocess.word_index(docs, self._word_index_config)
-
+        print(docs[1068145])
         return dids, docs
+
+    @staticmethod
+    def char_filter(docs):
+        new_docs = []
+        for doc in docs:
+            #print(type(doc))
+            #print(doc)
+            new_doc = []
+            for word in doc:
+                new_word = re.sub('[^a-zA-Z0-9]+', ' ', word.decode("utf-8"))
+                while("  " in new_word):
+                    new_word = new_word.replace("  ", " ")
+                new_doc.append(new_word)
+            new_docs.append(new_doc)
+        return new_docs
 
     @staticmethod
     def parse(line):
@@ -131,21 +175,21 @@ class Preprocess(object):
             did = dids[inum]
             if did.startswith("Q"):
                 docs_num -= 1
-                for w in ws:
+                for w in ws.split(" "):
                     if w not in words_stats:
                         words_stats[w] = {}
                         words_stats[w]['cf'] = 0
                         words_stats[w]['df'] = 0
                         words_stats[w]['idf'] = 0
             elif did.startswith("D"):
-                for w in ws:
+                for w in ws.split(" "):
                     if w not in words_stats:
                         words_stats[w] = {}
                         words_stats[w]['cf'] = 0
                         words_stats[w]['df'] = 0
                         words_stats[w]['idf'] = 0
                     words_stats[w]['cf'] += 1
-                for w in set(ws):
+                for w in set(ws.split(" ")):
                     words_stats[w]['df'] += 1
         for w, winfo in words_stats.items():
             words_stats[w]['idf'] = np.log( (1. + docs_num) / (1. + winfo['df']))
@@ -207,16 +251,23 @@ class Preprocess(object):
     @staticmethod
     def build_word_dict(docs):
         word_dict = dict()
-        for ws in docs:
-            for w in ws:
+        for i,ws in enumerate(docs):
+            if i == 1068145:
+                print(ws)
+            for w in ws.split(" "):
+                #print(w)
+                if i == 1068145:
+                    print("Building_word_dict")
+                    print(w)
                 word_dict.setdefault(w, len(word_dict))
+            #break
         return word_dict
 
     @staticmethod
     def word_index(docs, config):
         if config['word_dict'] is None:
             config['word_dict'] = Preprocess.build_word_dict(docs)
-        docs = [[config['word_dict'][w] for w in ws if w in config['word_dict']] for ws in tqdm(docs)]
+        docs = [[config['word_dict'][w] for w in ws.split(" ") if w in config['word_dict']] for ws in tqdm(docs)]
         return docs, config['word_dict']
 
     @staticmethod
@@ -537,7 +588,7 @@ if __name__ == '__main__':
 
     fout = open(basedir + 'corpus_preprocessed.txt', 'w')
     for inum, did in enumerate(dids):
-        fout.write('%s\t%s\n' % (did, ' '.join(map(str, docs[inum]))))
+        fout.write('%s\t%s\n' % (did, ' '.join(map(str, docs[inum].split(" ")))))
     fout.close()
     print('preprocess finished ...')
 

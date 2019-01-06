@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
@@ -7,273 +8,50 @@ import numpy as np
 from utils.rank_io import *
 from layers import DynamicMaxPooling
 import scipy.sparse as sp
-import tqdm
-import gc
 
 class PairBasicGenerator(object):
-    def __init__(self, config, selfreldel=True):
+    def __init__(self, config):
         self.__name = 'PairBasicGenerator'
         self.config = config
         rel_file = config['relation_file']
         self.rel = read_relation(filename=rel_file)
         self.batch_size = config['batch_size']
-        #print("self.batch_size")
-        #print(self.batch_size)
+        print("self.batch_size")
+        print(self.batch_size)
         self.check_list = ['relation_file', 'batch_size']
         self.point = 0
         if config['use_iter']:
             self.pair_list_iter = self.make_pair_iter(self.rel)
             self.pair_list = []
         else:
-            self.pair_list = self.make_pair_static(self.rel, True)
+            self.pair_list = self.make_pair_static(self.rel)
             self.pair_list_iter = None
-        if selfreldel:
-            del self.rel
-            gc.collect()
-        self.amount_of_traditional_entries = 0
-        self.traditional_ratio = 1
-        self.axiomatic_ratio = 1
-        #TODO add exception if these ratios are not possible
+
     def check(self):
         for e in self.check_list:
             if e not in self.config:
                 print('[%s] Error %s not in config' % (self.__name, e), end='\n')
                 return False
         return True
-    def make_pair_static(self, rel, labels=False):
+    def make_pair_static(self, rel):
         rel_set = {}
         pair_list = []
-        #two_and_one = 0
-        #two_and_zero = 0
-        #one_and_zero = 0
-        #print(rel)
         for label, d1, d2 in rel:
-            #print(d2)
             if d1 not in rel_set:
                 rel_set[d1] = {}
             if label not in rel_set[d1]:
                 rel_set[d1][label] = []
-            if ";" in d2:
-                #print("Found a ; ")
-                d2_high_doc = ""
-                d2_low_doc = ""
-                for d2_entry in d2.split(";"):
-                    #print(d2_entry)
-                    if d2_high_doc == "":
-                        d2_high_doc = d2_entry
-                    else:
-                        #d2_low_doc = ""
-                        d2_delta = -1
-                        if "D" in d2_entry:
-                            #print("Found D")
-                            d2_low_doc = d2_entry
-                        else:
-                            d2_delta = d2_entry
-                            rel_set[d1][label].append(d2_high_doc + ";" + d2_low_doc + ";" + d2_delta)
-                            
-                            #print(d2_high_doc, ";",d2_low_doc,";", str(d2_delta))
-            else: #below these got wrongly assigned the 1 label
-                if label == 1: # filter out those that have axiomatic precedence over an answer
-                    if 0 not in rel_set[d1]:
-                        #print([type(key) for key in rel_set.keys()])
-                        rel_set[d1][0] = [d2]
-                    else:
-                        rel_set[d1][0].append(d2)
-                else:
-                    rel_set[d1][label].append(d2)
-                #print(d2)
-        print("Created rel_set")
-        #print(len(rel_set.keys()))
-
-        #print(rel_set)
-        pbar = tqdm.tqdm(total=len(rel_set))
-        #for qid, val in rel_set.iteritems():
-            #print(key)
-        #    for label in val:
-        #       if type(label) != int:
-        #           print(label, type(label))
-               #break
-            #break
-#            if len(rel_set[d1]) != 3:
-#                print(rel_set[d1].keys())
-        ANA_NAX = 0 #counter for regular training entries
-        print("Creating regular training data")
+            rel_set[d1][label].append(d2)
         for d1 in rel_set:
-            #print(d1)
-            #print(rel_set[d1])
             label_list = sorted(rel_set[d1].keys(), reverse = True)
-            #if len(label_list[:-(len(label_list)-1)]) == 0 or len(label_list[len(label_list)-1:]) == 0:
-            #for hidx, high_label in enumerate(label_list[:-1]):
-            #    for low_label in label_list[hidx+1:]:
-            for high_label in label_list[:-(len(label_list)-1)]:
-                #for low_label in label_list[len(label_list)-1:]:
-                for low_label in label_list[1:]:
-            #        prev_pair_list_len = len(pair_list)
-                    #print("Lets check " + str(len(rel_set[d1][high_label])) + " high instances")
-                    if high_label != 2 or low_label > 1:
-                        print(high_label, low_label)
-                        continue
+            for hidx, high_label in enumerate(label_list[:-1]):
+                for low_label in label_list[hidx+1:]:
                     for high_d2 in rel_set[d1][high_label]:
-                        local_high_d2 = high_d2
-                        #if high_d2 == "2":
-                        #    local_label = "A"
-                        #else:
-                        #    local_label = "NA"
                         for low_d2 in rel_set[d1][low_label]:
-                            local_low_d2 = low_d2
-                            axiom = "NAX"
-                            delta = -1
-            #                prev_pair_list_len = len(pair_list)
-                            if ";" in local_low_d2:
-                                local_low_d2 = local_low_d2.split(";")[0]
-                            if ";" in high_d2:
-                                splitted_high_d2 = high_d2.split(";")
-                                local_high_d2 = splitted_high_d2[0]
-                                #if local_low_d2 in splitted_high_d2:
-                                #    continue
-                                    #index_of_low_d2 = splitted_high_d2.index(local_ow_d2)
-                                    #delta = splitted_high_d2[index_of_low_d2+1]
-                                    #axiom = "TFC1"
-                            
-                            #print((d1, local_high_d2, local_low_d2, delta, str(high_label)+"_"+str(low_label)+"_"+axiom))
-                            pair_list.append( (d1, local_high_d2, local_low_d2) )#, delta) ) #, str(high_label)+"_"+str(low_label)+"_"+axiom) )
-                            ANA_NAX += 1
-                            #self.amount_of_traditional_entries += 1
-                                    #print("Searching for 2,0 rels")
-                                    #print("Found axiomatic instance, 2,0")
-                                    #print(d1,high_d2,low_d2,delta)
-                                    #print(splitted_high_d2)
-                                    #return
-                                #else:
-                                #    pair_list.append( (d1, high_d2, low_d2, -1, "ANA-NAX") )
-                            #else:
-                            #    pair_list.append( (d1, high_d2, low_d2, -1, "ANA-NAX") )
-                            #new_pair_list_len = len(pair_list)
-                            #if new_pair_list_len == prev_pair_list_len:
-                            #    print(high_d2, high_label)
-                            #    print(low_d2, low_label)
-        #print(high_label, low_label)
-        #    break
-            pbar.update(1)
-            #break
-        #print("FINISHED FIRST PART")
-        #print(len(set([x for x,a,b,c,d in pair_list])))
-        #missing_qs = set(rel_set.keys())-set([x for x,a,b,c,d in pair_list])
-        #for d1 in rel_set:
-        #    if d1 in missing_qs:
-        #        print(rel_set[d1])
-        pbar.close()
-
-        print("Creating axiomatic training data")
-        #pbar2 = tqdm.tqdm(total=len(rel_set))
-        for d1 in rel_set:
-            #print(d1)
-            #print(rel_set[d1])
-            for label, rels in rel_set[d1].iteritems():
-                if label == 0: # 0's never have a naxiomatic rel
-                    continue
-                for rel in rels:
-                    if ";" not in rel: #this doc has no axiomatic rel
-                        continue
-                    splitted_rel = rel.split(";")
-                    #print(splitted_rel)
-                    #print( (d1, splitted_rel[0], splitted_rel[1], splitted_rel[2], str(label)+"_1?0"+"_"+"TFC1")  )
-                    
-                    pair_list.append( (d1, splitted_rel[0], splitted_rel[1]) )#, splitted_rel[2] ) ) #, str(label)+"_1?0"+"_"+"TFC1") ) 
-                    #pbar2.update(1)
-            #label_lp=ist = sorted(rel_set[d1].keys(), reverse = True)
-            #print("Label_list")
-            #print(label_list)
-            #for hidx, high_label in enumerate(label_list[:-1]):
-                #print("high_label")
-                #print(high_label)
-                #for low_label in label_list[hidx+1:]:
-                    #print("low_label")
-                    #print(low_label)
-                    #break
-                #break
-                    #if high_label == "2" and low_label == "0":
-                    #    continue
-                    #for high_d2 in rel_set[d1][high_label]:
-                    #    for low_d2 in rel_set[d1][low_label]:
-                            #print("high_d2", str(high_d2), str(high_label))
-                            #print("low_d2", str(low_d2), str(low_label))
-                    #        delta = -1
-                    #        high_d2_local = high_d2
-                            
-                            # remove our addition to low_d2 for the axiom
-                    #        if ";" in low_d2:
-                    #            low_d2 = low_d2.split(";")[0]
-                            
-                    #        if ";" in high_d2:
-                    #            high_low_delta_d2 = high_d2.split(";")
-                    #            high_d2_local = high_low_delta_d2[0]
-                    #            low_d2_axiom = high_low_delta_d2[1]
-                    #            delta = high_low_delta_d2[2]  
-                                
-                    #            if int(high_label) == 2 and low_d2 != low_d2_axiom: # if this rel is not axiomatic
-                    #                delta = -1
-                    #            elif int(high_label) == 1 and low_d2 != low_d2_axiom: # if this rel is not the (axiomatic) rel we are looking for
-                    #                continue
-                                
-                                
-                                #print("Inner")
-                                #print(high_d2_local)
-                            #print("Outer")
-                            #print(high_d2_local) 
-                            #if ";" in high_d2_local:
-                                #print("Found ; in high_d2_local")
-                                #print("extracted high_d2", str(high_d2))
-                     #       if (d1, high_d2_local, low_d2, delta) not in pair_list:
-                                #print("high_d2", str(high_d2), str(high_label))
-                                #print("low_d2", str(low_d2), str(low_label))
-                                #print("extracted high_d2_local", str(high_d2_local))
-                                #print("extracted low_d2", str(low_d2))
-                                #print("extracted delta", str(delta))
-                     #           pair_list.append( (d1, high_d2_local, low_d2, delta) ) #pair_list.append( (d1, high_d2_local, low_d2, delta) )
-                     #           if labels:
-                     #               if int(high_label) == 2:
-                     #                   if int(low_label) == 1:
-                     #                       two_and_one += 1
-                     #                   else:
-                     #                       two_and_zero += 1
-                     #               else:
-                     #                   one_and_zero += 1
-            #pbar.update(1)
-        #if labels:
-        #    print("two_and_one", "two_and_zero", "one_and_zero")
-        #    print(two_and_one, two_and_zero, one_and_zero)
-        
-        #    pbar.update(1)
-        #pbar2.close()
+                            pair_list.append( (d1, high_d2, low_d2) )
         print('Pair Instance Count:', len(pair_list), end='\n')
-        #print(pair_list)
-        #return pair_list
-
-        #ANA_TFC1 = 0
-        #NANA_TFC1 = 0
-        #ANA_NAX = 0
-        #NANA_NAX = 0
-        #for entry in pair_list:
-        #    label = entry[4]
-        #    if label.endswith("TFC1"):
-        #        if label.startswith("2"):
-        #            ANA_TFC1 += 1
-        #        else:
-        #            NANA_TFC1 += 1
-        #    else:
-        #        if label.startswith("2"):
-        #            ANA_NAX += 1
-          #else:
-                #    NANA_NAX += 1
-        #self.amount_of_traditional_entries = ANA_NAX
-        #print("Axiomatic entries")
-        #print("Answer, non_answer", str(ANA_TFC1))
-        #print("Non_answer, non_answer", str(NANA_TFC1))
-        print("Regular entries")
-        print("Answer, non_answer", str(ANA_NAX))
-        #print("Non_answer, non_answer", str(NANA_NAX))
         return pair_list
+
     def make_pair_iter(self, rel):
         rel_set = {}
         pair_list = []
@@ -345,38 +123,8 @@ class PairGenerator(PairBasicGenerator):
         Y[::2] = 1
         X1[:] = self.fill_word
         X2[:] = self.fill_word
-        
-        add_traditional = True
-        added_traditional = 0
-        added_axiomatic = 0
         for i in range(self.batch_size):
-            if add_traditional:
-                #my_list = range(self.amount_of_traditional_entries)
-                #print("my_list")
-                #print(my_list)
-                my_rand_index = int(random.random() * 157053683)#156216476)#range(self.amount_of_traditional_entries))
-                #print("my_rand_index", my_rand_index)
-                #print("len_of_pair_list", str(len(self.pair_list)))
-                #d1, d2p, d2n, delta, label = self.pair_list[my_rand_index]
-                d1, d2p, d2n = self.pair_list[my_rand_index]
-                added_traditional += 1
-            else:
-                my_rand_index = int(random.random() * (len(self.pair_list)-157053683)) + 157053683#156216476)) + 156216476
-                #d1, d2p, d2n, delta, label = self.pair_list[my_rand_index]
-                d1, d2p, d2n = self.pair_list[my_rand_index]
-                added_axiomatic += 1            
-            if added_traditional >= self.traditional_ratio:
-               add_traditional = False
-               added_traditional = 0
-            elif added_axiomatic >= self.axiomatic_ratio :
-               add_traditional = True 
-               added_axiomatic = 0
-            #if i % 2 == 0:
-            #    d1, d2p, d2n, delta, label = self.pair_list[random.choice(range(self.amount_of_traditional_entries)))]
-            #d1, d2p, d2n, delta,label = random.choice(self.pair_list)
-            #print(d1,d2p,d2n,delta,label)
-            #if ";" in d2p:
-            #    d2p = d2p.split(";")[0]
+            d1, d2p, d2n = random.choice(self.pair_list)
             d1_cont = list(self.data1[d1])
             d2p_cont = list(self.data2[d2p])
             d2n_cont = list(self.data2[d2n])
@@ -485,9 +233,7 @@ class Triletter_PairGenerator(PairBasicGenerator):
         Y[::2] = 1
         X1, X2 = [], []
         for i in range(self.batch_size):
-            d1, d2p, d2n, delta, label = random.choice(self.pair_list)
-            #if ";" in d2n:
-            #    d2n = d2n.split(";")[0]
+            d1, d2p, d2n = random.choice(self.pair_list)
             d1_len = len(list(self.data1[d1]))
             d2p_len = len(list(self.data2[d2p]))
             d2n_len = len(list(self.data2[d2n]))
@@ -603,8 +349,7 @@ class DRMM_PairGenerator(PairBasicGenerator):
         Y[::2] = 1
         X1[:] = self.fill_word
         for i in range(self.batch_size):
-            d1, d2p, d2n, delta, label = random.choice(self.pair_list)
-            
+            d1, d2p, d2n = random.choice(self.pair_list)
             d1_cont = list(self.data1[d1])
             d2p_cont = list(self.data2[d2p])
             d2n_cont = list(self.data2[d2n])
@@ -689,7 +434,7 @@ class PairGenerator_Feats(PairBasicGenerator):
         X1[:] = self.fill_word
         X2[:] = self.fill_word
         for i in range(self.batch_size):
-            d1, d2p, d2n, delta, label = random.choice(self.pair_list)
+            d1, d2p, d2n = random.choice(self.pair_list)
             d1_len = min(self.data1_maxlen, len(self.data1[d1]))
             d2p_len = min(self.data2_maxlen, len(self.data2[d2p]))
             d2n_len = min(self.data2_maxlen, len(self.data2[d2n]))

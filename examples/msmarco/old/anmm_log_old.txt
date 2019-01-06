@@ -1,0 +1,447 @@
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/MSMarco/relation_test.binsum-20.txt", 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/MSMarco/relation_test.binsum-20.txt", 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "train": {
+      "relation_file": "./data/MSMarco/relation_train.txt", 
+      "input_type": "DRMM_PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "hist_feats_file": "./data/MSMarco/relation_train.binsum-20.txt", 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 212466, 
+      "use_dpool": false, 
+      "embed_size": 300, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "embed_path": "./data/MSMarco/embed.idf", 
+      "text1_maxlen": 10, 
+      "bin_num": 20, 
+      "train_embed": false, 
+      "text2_maxlen": 40
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/MSMarco/relation_valid.binsum-20.txt", 
+      "relation_file": "./data/MSMarco/relation_valid.txt", 
+      "batch_list": 10
+    }
+  }, 
+  "global": {
+    "optimizer": "adadelta", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 1.0, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/msmarco/weights/anmm.msmarco.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.anmm.msmarco.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "ndcg@3", 
+    "ndcg@5", 
+    "map"
+  ], 
+  "net_name": "ANMM", 
+  "model": {
+    "model_py": "anmm.ANMM", 
+    "setting": {
+      "dropout_rate": 0.0, 
+      "hidden_sizes": [
+        20, 
+        1
+      ], 
+      "num_layers": 2
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[./data/MSMarco/embed.idf]
+	Embedding size: 361237
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/MSMarco/relation_test.binsum-20.txt", 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/MSMarco/relation_test.binsum-20.txt", 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "train": {
+      "relation_file": "./data/MSMarco/relation_train.txt", 
+      "input_type": "DRMM_PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "hist_feats_file": "./data/MSMarco/relation_train.binsum-20.txt", 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 361237, 
+      "use_dpool": false, 
+      "embed_size": 300, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "embed_path": "./data/MSMarco/embed.idf", 
+      "text1_maxlen": 10, 
+      "bin_num": 20, 
+      "train_embed": false, 
+      "text2_maxlen": 40
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/MSMarco/relation_valid.binsum-20.txt", 
+      "relation_file": "./data/MSMarco/relation_valid.txt", 
+      "batch_list": 10
+    }
+  }, 
+  "global": {
+    "optimizer": "adadelta", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 1.0, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/msmarco/weights/anmm.msmarco.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.anmm.msmarco.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "ndcg@3", 
+    "ndcg@5", 
+    "map"
+  ], 
+  "net_name": "ANMM", 
+  "model": {
+    "model_py": "anmm.ANMM", 
+    "setting": {
+      "dropout_rate": 0.0, 
+      "hidden_sizes": [
+        20, 
+        1
+      ], 
+      "num_layers": 2
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[./data/MSMarco/embed.idf]
+	Embedding size: 361237
+Generate numpy embed: (361237, 300)
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'train'] in TRAIN, [u'test', u'valid'] in EVAL.
+[./data/MSMarco/corpus_preprocessed.txt]
+	Data size: 1067084
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/MSMarco/relation_train.txt', u'vocab_size': 361237, u'query_per_iter': 50, u'use_dpool': False, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'DRMM_PairGenerator', u'text1_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'batch_size': 100, u'batch_per_iter': 5, u'text2_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'hist_feats_file': u'./data/MSMarco/relation_train.binsum-20.txt', u'embed_path': u'./data/MSMarco/embed.idf', u'text1_maxlen': 10, u'phase': u'TRAIN', u'bin_num': 20, 'embed': array([[ 7.284442,  7.284442,  7.284442, ...,  7.284442,  7.284442,
+         7.284442],
+       [ 0.281237,  0.281237,  0.281237, ...,  0.281237,  0.281237,
+         0.281237],
+       [ 8.905163,  8.905163,  8.905163, ...,  8.905163,  8.905163,
+         8.905163],
+       ...,
+       [13.160776, 13.160776, 13.160776, ..., 13.160776, 13.160776,
+        13.160776],
+       [13.160776, 13.160776, 13.160776, ..., 13.160776, 13.160776,
+        13.160776],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 40, u'use_iter': False}
+[./data/MSMarco/relation_train.txt]
+	Instance size: 1129683
+self.batch_size
+100
+Pair Instance Count: 1169829
+[./data/MSMarco/relation_train.binsum-20.txt]
+	Feature size: 1129683
+[DRMM_PairGenerator] init done
+{u'relation_file': u'./data/MSMarco/relation_test.txt', u'vocab_size': 361237, u'use_dpool': False, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'DRMM_ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'text2_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'hist_feats_file': u'./data/MSMarco/relation_test.binsum-20.txt', u'embed_path': u'./data/MSMarco/embed.idf', u'text1_maxlen': 10, u'phase': u'EVAL', u'bin_num': 20, 'embed': array([[ 7.284442,  7.284442,  7.284442, ...,  7.284442,  7.284442,
+         7.284442],
+       [ 0.281237,  0.281237,  0.281237, ...,  0.281237,  0.281237,
+         0.281237],
+       [ 8.905163,  8.905163,  8.905163, ...,  8.905163,  8.905163,
+         8.905163],
+       ...,
+       [13.160776, 13.160776, 13.160776, ..., 13.160776, 13.160776,
+        13.160776],
+       [13.160776, 13.160776, 13.160776, ..., 13.160776, 13.160776,
+        13.160776],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 40}
+[./data/MSMarco/relation_test.txt]
+	Instance size: 140340
+List Instance Count: 2779
+[./data/MSMarco/relation_test.binsum-20.txt]
+	Feature size: 140340
+[DRMM_ListGenerator] init done, list number: 2779. 
+{u'relation_file': u'./data/MSMarco/relation_valid.txt', u'vocab_size': 361237, u'use_dpool': False, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'DRMM_ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'text2_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'hist_feats_file': u'./data/MSMarco/relation_valid.binsum-20.txt', u'embed_path': u'./data/MSMarco/embed.idf', u'text1_maxlen': 10, u'phase': u'EVAL', u'bin_num': 20, 'embed': array([[ 7.284442,  7.284442,  7.284442, ...,  7.284442,  7.284442,
+         7.284442],
+       [ 0.281237,  0.281237,  0.281237, ...,  0.281237,  0.281237,
+         0.281237],
+       [ 8.905163,  8.905163,  8.905163, ...,  8.905163,  8.905163,
+         8.905163],
+       ...,
+       [13.160776, 13.160776, 13.160776, ..., 13.160776, 13.160776,
+        13.160776],
+       [13.160776, 13.160776, 13.160776, ..., 13.160776, 13.160776,
+        13.160776],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 40}
+[./data/MSMarco/relation_valid.txt]
+	Instance size: 140342
+List Instance Count: 2779
+[./data/MSMarco/relation_valid.binsum-20.txt]
+	Feature size: 140342
+[DRMM_ListGenerator] init done, list number: 2779. 
+[ANMM] init done
+[layer]: Input	[shape]: [None, 10] 
+72.5% memory has been used
+[layer]: Input	[shape]: [None, 10, 20] 
+72.5% memory has been used
+[layer]: Embedding	[shape]: [None, 10, 300] 
+72.8% memory has been used
+[layer]: Dense	[shape]: [None, 10, 1] 
+72.8% memory has been used
+[layer]: Lambda-softmax	[shape]: [None, 10, 1] 
+72.8% memory has been used
+[layer]: Dropout	[shape]: [None, 10, 20] 
+72.8% memory has been used
+[layer]: Dense	[shape]: [None, 10, 20] 
+72.8% memory has been used
+[layer]: Dense	[shape]: [None, 10, 1] 
+72.8% memory has been used
+[layer]: Permute	[shape]: [None, 1, 10] 
+72.8% memory has been used
+[layer]: Reshape	[shape]: [None, 10] 
+72.8% memory has been used
+[layer]: Reshape	[shape]: [None, 10] 
+72.8% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+72.8% memory has been used
+[Model] Model Compile Done.
+[12-31-2018 01:18:10]	[Train:train] Iter:0	loss=0.976015
+[12-31-2018 01:18:13]	[Eval:test] Iter:0	ndcg@3=0.269991	map=0.304408	ndcg@5=0.297156
+[12-31-2018 01:18:19]	[Eval:valid] Iter:0	ndcg@3=0.270406	map=0.306889	ndcg@5=0.298500
+[12-31-2018 01:18:25]	[Train:train] Iter:1	loss=0.896690
+[12-31-2018 01:18:25]	[Eval:test] Iter:1	ndcg@3=0.288016	map=0.321375	ndcg@5=0.315149
+[12-31-2018 01:18:32]	[Eval:valid] Iter:1	ndcg@3=0.300018	map=0.335681	ndcg@5=0.329005
+[12-31-2018 01:18:39]	[Train:train] Iter:2	loss=0.803273
+[12-31-2018 01:18:39]	[Eval:test] Iter:2	ndcg@3=0.284612	map=0.319724	ndcg@5=0.313905
+[12-31-2018 01:18:45]	[Eval:valid] Iter:2	ndcg@3=0.299361	map=0.334040	ndcg@5=0.329387
+[12-31-2018 01:18:52]	[Train:train] Iter:3	loss=0.699425
+[12-31-2018 01:18:52]	[Eval:test] Iter:3	ndcg@3=0.281167	map=0.316756	ndcg@5=0.311013
+[12-31-2018 01:18:58]	[Eval:valid] Iter:3	ndcg@3=0.296955	map=0.332481	ndcg@5=0.326665
+[12-31-2018 01:19:05]	[Train:train] Iter:4	loss=0.671965
+[12-31-2018 01:19:05]	[Eval:test] Iter:4	ndcg@3=0.280570	map=0.315022	ndcg@5=0.309291
+[12-31-2018 01:19:12]	[Eval:valid] Iter:4	ndcg@3=0.298204	map=0.333984	ndcg@5=0.328035
+[12-31-2018 01:19:18]	[Train:train] Iter:5	loss=0.713698
+[12-31-2018 01:19:18]	[Eval:test] Iter:5	ndcg@3=0.274791	map=0.312729	ndcg@5=0.306423
+[12-31-2018 01:19:24]	[Eval:valid] Iter:5	ndcg@3=0.295515	map=0.331948	ndcg@5=0.326921
+[12-31-2018 01:19:31]	[Train:train] Iter:6	loss=0.616023
+[12-31-2018 01:19:31]	[Eval:test] Iter:6	ndcg@3=0.275219	map=0.312052	ndcg@5=0.304043
+[12-31-2018 01:19:38]	[Eval:valid] Iter:6	ndcg@3=0.297966	map=0.334357	ndcg@5=0.328596
+[12-31-2018 01:19:44]	[Train:train] Iter:7	loss=0.648359
+[12-31-2018 01:19:44]	[Eval:test] Iter:7	ndcg@3=0.277644	map=0.315509	ndcg@5=0.307094
+[12-31-2018 01:19:50]	[Eval:valid] Iter:7	ndcg@3=0.304092	map=0.338755	ndcg@5=0.332025
+[12-31-2018 01:19:56]	[Train:train] Iter:8	loss=0.661198
+[12-31-2018 01:19:56]	[Eval:test] Iter:8	ndcg@3=0.277072	map=0.313464	ndcg@5=0.306357
+[12-31-2018 01:20:02]	[Eval:valid] Iter:8	ndcg@3=0.298936	map=0.334553	ndcg@5=0.328711
+[12-31-2018 01:20:08]	[Train:train] Iter:9	loss=0.670752
+[12-31-2018 01:20:08]	[Eval:test] Iter:9	ndcg@3=0.276464	map=0.313252	ndcg@5=0.305129
+[12-31-2018 01:20:15]	[Eval:valid] Iter:9	ndcg@3=0.298318	map=0.333966	ndcg@5=0.329137
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/MSMarco/relation_test.binsum-20.txt", 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/MSMarco/relation_test.binsum-20.txt", 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "train": {
+      "relation_file": "./data/MSMarco/relation_train.txt", 
+      "input_type": "DRMM_PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "hist_feats_file": "./data/MSMarco/relation_train.binsum-20.txt", 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 361237, 
+      "use_dpool": false, 
+      "embed_size": 300, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "embed_path": "./data/MSMarco/embed.idf", 
+      "text1_maxlen": 10, 
+      "bin_num": 20, 
+      "train_embed": false, 
+      "text2_maxlen": 40
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "DRMM_ListGenerator", 
+      "hist_feats_file": "./data/MSMarco/relation_valid.binsum-20.txt", 
+      "relation_file": "./data/MSMarco/relation_valid.txt", 
+      "batch_list": 10
+    }
+  }, 
+  "global": {
+    "optimizer": "adadelta", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 1.0, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/msmarco/weights/anmm.msmarco.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.anmm.msmarco.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "ndcg@3", 
+    "ndcg@5", 
+    "map"
+  ], 
+  "net_name": "ANMM", 
+  "model": {
+    "model_py": "anmm.ANMM", 
+    "setting": {
+      "dropout_rate": 0.0, 
+      "hidden_sizes": [
+        20, 
+        1
+      ], 
+      "num_layers": 2
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[./data/MSMarco/embed.idf]
+	Embedding size: 361237
+Generate numpy embed: (361237, 300)
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'predict'] in PREDICT.
+[./data/MSMarco/corpus_preprocessed.txt]
+	Data size: 1067084
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/MSMarco/relation_test.txt', u'vocab_size': 361237, u'use_dpool': False, u'embed_size': 300, u'target_mode': u'ranking', u'input_type': u'DRMM_ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'text2_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'hist_feats_file': u'./data/MSMarco/relation_test.binsum-20.txt', u'embed_path': u'./data/MSMarco/embed.idf', u'text1_maxlen': 10, u'phase': u'PREDICT', u'bin_num': 20, 'embed': array([[ 7.284442,  7.284442,  7.284442, ...,  7.284442,  7.284442,
+         7.284442],
+       [ 0.281237,  0.281237,  0.281237, ...,  0.281237,  0.281237,
+         0.281237],
+       [ 8.905163,  8.905163,  8.905163, ...,  8.905163,  8.905163,
+         8.905163],
+       ...,
+       [13.160776, 13.160776, 13.160776, ..., 13.160776, 13.160776,
+        13.160776],
+       [13.160776, 13.160776, 13.160776, ..., 13.160776, 13.160776,
+        13.160776],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 40}
+[./data/MSMarco/relation_test.txt]
+	Instance size: 140340
+List Instance Count: 2779
+[./data/MSMarco/relation_test.binsum-20.txt]
+	Feature size: 140340
+[DRMM_ListGenerator] init done, list number: 2779. 
+[ANMM] init done
+[layer]: Input	[shape]: [None, 10] 
+68.1% memory has been used
+[layer]: Input	[shape]: [None, 10, 20] 
+68.1% memory has been used
+[layer]: Embedding	[shape]: [None, 10, 300] 
+68.5% memory has been used
+[layer]: Dense	[shape]: [None, 10, 1] 
+68.5% memory has been used
+[layer]: Lambda-softmax	[shape]: [None, 10, 1] 
+68.5% memory has been used
+[layer]: Dropout	[shape]: [None, 10, 20] 
+68.5% memory has been used
+[layer]: Dense	[shape]: [None, 10, 20] 
+68.5% memory has been used
+[layer]: Dense	[shape]: [None, 10, 1] 
+68.5% memory has been used
+[layer]: Permute	[shape]: [None, 1, 10] 
+68.5% memory has been used
+[layer]: Reshape	[shape]: [None, 10] 
+68.5% memory has been used
+[layer]: Reshape	[shape]: [None, 10] 
+68.5% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+68.5% memory has been used
