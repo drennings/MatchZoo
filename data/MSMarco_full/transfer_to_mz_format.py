@@ -6,7 +6,7 @@ import codecs
 import re
 basedir = './MSMarco/'
 dstdir = './'
-infiles = [ basedir + 'MSMarco-train-filtered.txt', basedir + 'MSMarco-dev-filtered.txt', basedir + 'MSMarco-test-filtered.txt' ]
+infiles = [ basedir + 'MSMarco-train-filtered_all.txt', basedir + 'MSMarco-dev-filtered_all.txt', basedir + 'MSMarco-test-filtered_all.txt' ]
 outfiles = [ dstdir + 'MSMarco-mz-train.txt', dstdir + 'MSMarco-mz-dev.txt', dstdir + 'MSMarco-mz-test.txt' ]
 
 #for idx, infile in enumerate(infiles):
