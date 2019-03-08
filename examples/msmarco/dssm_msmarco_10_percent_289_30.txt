@@ -1,0 +1,161 @@
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "Triletter_ListGenerator", 
+      "batch_list": 10, 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "dtype": "dssm"
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "Triletter_ListGenerator", 
+      "batch_list": 10, 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "dtype": "dssm"
+    }, 
+    "train": {
+      "relation_file": "./data/MSMarco/relation_train.txt", 
+      "input_type": "Triletter_PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "dtype": "dssm", 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 534432, 
+      "embed_size": 50, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "word_triletter_map_file": "./data/MSMarco/word_triletter_map.txt"
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "Triletter_ListGenerator", 
+      "batch_list": 10, 
+      "relation_file": "./data/MSMarco/relation_valid.txt", 
+      "dtype": "dssm"
+    }
+  }, 
+  "global": {
+    "optimizer": "adam", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 0.001, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/msmarco/weights/dssm.msmarco.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.dssm.msmarco.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "ndcg@3", 
+    "ndcg@5", 
+    "map"
+  ], 
+  "net_name": "DSSM", 
+  "model": {
+    "model_py": "dssm.DSSM", 
+    "setting": {
+      "dropout_rate": 0.9, 
+      "hidden_sizes": [
+        300
+      ]
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'train'] in TRAIN, [u'test', u'valid'] in EVAL.
+[./data/MSMarco/corpus_preprocessed.txt]
+	Data size: 1813717
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/MSMarco/relation_train.txt', u'vocab_size': 534432, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'Triletter_PairGenerator', u'text1_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'batch_size': 100, u'batch_per_iter': 5, u'text2_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'word_triletter_map_file': u'./data/MSMarco/word_triletter_map.txt', u'dtype': u'dssm', u'phase': u'TRAIN', 'embed': array([[-0.18291523, -0.00574826, -0.13887608, ..., -0.03456349,
+         0.10058585,  0.15525076],
+       [-0.01294214,  0.08529575, -0.1892907 , ...,  0.04963925,
+        -0.11150367,  0.02667126],
+       [ 0.19042659,  0.09277846, -0.10941583, ...,  0.16021279,
+        -0.14250447, -0.0654474 ],
+       ...,
+       [-0.0957741 ,  0.16411217,  0.06209011, ..., -0.14253224,
+        -0.06723884,  0.12191606],
+       [ 0.16106053, -0.13242728,  0.16591352, ..., -0.04975767,
+        -0.10635707,  0.10771402],
+       [ 0.02020835, -0.05498331,  0.07255716, ...,  0.1147249 ,
+        -0.00066217,  0.06315336]], dtype=float32), u'query_per_iter': 50, u'use_iter': False}
+[./data/MSMarco/relation_train.txt]
+	Instance size: 2259576
+self.batch_size
+100
+Pair Instance Count: 2343172
+[Triletter_PairGenerator] init done
+{u'relation_file': u'./data/MSMarco/relation_test.txt', u'vocab_size': 534432, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'Triletter_ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'text2_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'word_triletter_map_file': u'./data/MSMarco/word_triletter_map.txt', u'dtype': u'dssm', u'phase': u'EVAL', 'embed': array([[-0.18291523, -0.00574826, -0.13887608, ..., -0.03456349,
+         0.10058585,  0.15525076],
+       [-0.01294214,  0.08529575, -0.1892907 , ...,  0.04963925,
+        -0.11150367,  0.02667126],
+       [ 0.19042659,  0.09277846, -0.10941583, ...,  0.16021279,
+        -0.14250447, -0.0654474 ],
+       ...,
+       [-0.0957741 ,  0.16411217,  0.06209011, ..., -0.14253224,
+        -0.06723884,  0.12191606],
+       [ 0.16106053, -0.13242728,  0.16591352, ..., -0.04975767,
+        -0.10635707,  0.10771402],
+       [ 0.02020835, -0.05498331,  0.07255716, ...,  0.1147249 ,
+        -0.00066217,  0.06315336]], dtype=float32)}
+[./data/MSMarco/relation_test.txt]
+	Instance size: 280652
+List Instance Count: 5558
+[Triletter_ListGenerator] init done
+{u'relation_file': u'./data/MSMarco/relation_valid.txt', u'vocab_size': 534432, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'Triletter_ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'text2_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'word_triletter_map_file': u'./data/MSMarco/word_triletter_map.txt', u'dtype': u'dssm', u'phase': u'EVAL', 'embed': array([[-0.18291523, -0.00574826, -0.13887608, ..., -0.03456349,
+         0.10058585,  0.15525076],
+       [-0.01294214,  0.08529575, -0.1892907 , ...,  0.04963925,
+        -0.11150367,  0.02667126],
+       [ 0.19042659,  0.09277846, -0.10941583, ...,  0.16021279,
+        -0.14250447, -0.0654474 ],
+       ...,
+       [-0.0957741 ,  0.16411217,  0.06209011, ..., -0.14253224,
+        -0.06723884,  0.12191606],
+       [ 0.16106053, -0.13242728,  0.16591352, ..., -0.04975767,
+        -0.10635707,  0.10771402],
+       [ 0.02020835, -0.05498331,  0.07255716, ...,  0.1147249 ,
+        -0.00066217,  0.06315336]], dtype=float32)}
+[./data/MSMarco/relation_valid.txt]
+	Instance size: 280660
+List Instance Count: 5558
+[Triletter_ListGenerator] init done
+[DSSM] init done
+[layer]: Input	[shape]: [None, 534432] 
+10.2% memory has been used
+[layer]: Input	[shape]: [None, 534432] 
+10.2% memory has been used
+[layer]: MLP	[shape]: [None, 300] 
+10.2% memory has been used
+[layer]: MLP	[shape]: [None, 300] 
+10.2% memory has been used
+[layer]: Dot	[shape]: [None, 1] 
+10.2% memory has been used
+[Model] Model Compile Done.
+[01-17-2019 00:50:10]	[Train:train] Iter:0	loss=0.959887
+[01-17-2019 00:50:45]	[Eval:test] Iter:0	ndcg@3=0.107003	map=0.154252	ndcg@5=0.134056
+[01-17-2019 01:39:37]	[Eval:valid] Iter:0	ndcg@3=0.119597	map=0.166420	ndcg@5=0.149139
+[01-17-2019 02:41:54]	[Train:train] Iter:1	loss=0.913990
+[01-17-2019 02:42:19]	[Eval:test] Iter:1	ndcg@3=0.111080	map=0.159051	ndcg@5=0.138361
+[01-17-2019 04:09:50]	[Eval:valid] Iter:1	ndcg@3=0.124217	map=0.172606	ndcg@5=0.153636
+[01-17-2019 06:30:04]	[Train:train] Iter:2	loss=0.885595
+[01-17-2019 06:30:35]	[Eval:test] Iter:2	ndcg@3=0.117046	map=0.163242	ndcg@5=0.142851

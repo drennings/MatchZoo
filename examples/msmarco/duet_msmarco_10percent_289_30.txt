@@ -1,0 +1,464 @@
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "train": {
+      "relation_file": "./data/MSMarco/relation_train.txt", 
+      "input_type": "PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 534432, 
+      "use_dpool": false, 
+      "embed_size": 50, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "embed_path": "./data/MSMarco/embed_glove_d50_norm", 
+      "text1_maxlen": 30, 
+      "train_embed": false, 
+      "text2_maxlen": 289
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/MSMarco/relation_valid.txt", 
+      "batch_list": 10
+    }
+  }, 
+  "global": {
+    "optimizer": "adam", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 0.001, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/msmarco/weights/duet.msmarco.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.duet.msmarco_10percent.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "map"
+  ], 
+  "net_name": "DUET", 
+  "model": {
+    "model_py": "duet.DUET", 
+    "setting": {
+      "dm_hidden_sizes": [
+        30
+      ], 
+      "dm_d_mpool": 3, 
+      "lm_kernel_count": 32, 
+      "dm_dropout_rate": 0.5, 
+      "dm_kernel_count": 32, 
+      "lm_dropout_rate": 0.5, 
+      "dm_q_hidden_size": 32, 
+      "dm_kernel_size": 3, 
+      "lm_hidden_sizes": [
+        30
+      ]
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[./data/MSMarco/embed_glove_d50_norm]
+	Embedding size: 534432
+Generate numpy embed: (534432, 50)
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'train'] in TRAIN, [u'test', u'valid'] in EVAL.
+[./data/MSMarco/corpus_preprocessed.txt]
+	Data size: 1813717
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/MSMarco/relation_train.txt', u'vocab_size': 534432, u'query_per_iter': 50, u'use_dpool': False, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'PairGenerator', u'text1_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'batch_size': 100, u'batch_per_iter': 5, u'text2_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'embed_path': u'./data/MSMarco/embed_glove_d50_norm', u'text1_maxlen': 30, u'phase': u'TRAIN', 'embed': array([[-0.180141,  0.118711, -0.061135, ..., -0.011023,  0.014752,
+         0.149688],
+       [ 0.059426,  0.009634,  0.051523, ...,  0.259029,  0.032043,
+         0.15531 ],
+       [-0.154884, -0.251299, -0.239199, ...,  0.069709, -0.045894,
+         0.102536],
+       ...,
+       [-0.20787 , -0.03346 ,  0.236553, ...,  0.105165, -0.270588,
+         0.133882],
+       [ 0.294963, -0.169838, -0.111852, ..., -0.062208,  0.015724,
+        -0.082716],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 289, u'use_iter': False}
+[./data/MSMarco/relation_train.txt]
+	Instance size: 2259576
+self.batch_size
+100
+Pair Instance Count: 2343172
+[PairGenerator] init done
+{u'relation_file': u'./data/MSMarco/relation_test.txt', u'vocab_size': 534432, u'use_dpool': False, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'text2_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'embed_path': u'./data/MSMarco/embed_glove_d50_norm', u'text1_maxlen': 30, u'phase': u'EVAL', 'embed': array([[-0.180141,  0.118711, -0.061135, ..., -0.011023,  0.014752,
+         0.149688],
+       [ 0.059426,  0.009634,  0.051523, ...,  0.259029,  0.032043,
+         0.15531 ],
+       [-0.154884, -0.251299, -0.239199, ...,  0.069709, -0.045894,
+         0.102536],
+       ...,
+       [-0.20787 , -0.03346 ,  0.236553, ...,  0.105165, -0.270588,
+         0.133882],
+       [ 0.294963, -0.169838, -0.111852, ..., -0.062208,  0.015724,
+        -0.082716],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 289}
+[./data/MSMarco/relation_test.txt]
+	Instance size: 280652
+List Instance Count: 5558
+[ListGenerator] init done
+{u'relation_file': u'./data/MSMarco/relation_valid.txt', u'vocab_size': 534432, u'use_dpool': False, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'text2_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'embed_path': u'./data/MSMarco/embed_glove_d50_norm', u'text1_maxlen': 30, u'phase': u'EVAL', 'embed': array([[-0.180141,  0.118711, -0.061135, ..., -0.011023,  0.014752,
+         0.149688],
+       [ 0.059426,  0.009634,  0.051523, ...,  0.259029,  0.032043,
+         0.15531 ],
+       [-0.154884, -0.251299, -0.239199, ...,  0.069709, -0.045894,
+         0.102536],
+       ...,
+       [-0.20787 , -0.03346 ,  0.236553, ...,  0.105165, -0.270588,
+         0.133882],
+       [ 0.294963, -0.169838, -0.111852, ..., -0.062208,  0.015724,
+        -0.082716],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 289}
+[./data/MSMarco/relation_valid.txt]
+	Instance size: 280660
+List Instance Count: 5558
+[ListGenerator] init done
+[DUET] init done
+[layer]: Input	[shape]: [None, 30] 
+41.2% memory has been used
+[layer]: Input	[shape]: [None, 289] 
+41.2% memory has been used
+[layer]: Embedding	[shape]: [None, 30, 50] 
+41.2% memory has been used
+[layer]: Embedding	[shape]: [None, 289, 50] 
+41.2% memory has been used
+[layer]: XOR	[shape]: [None, 30, 289] 
+41.2% memory has been used
+[layer]: Conv1D	[shape]: [None, 30, 32] 
+41.2% memory has been used
+[layer]: Dropout	[shape]: [None, 30, 32] 
+41.2% memory has been used
+[layer]: Reshape	[shape]: [None, None] 
+41.2% memory has been used
+[layer]: Dense	[shape]: [None, 30] 
+41.2% memory has been used
+[layer]: Dropout	[shape]: [None, 30] 
+41.2% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+41.2% memory has been used
+[layer]: Conv1D	[shape]: [None, 30, 32] 
+41.2% memory has been used
+[layer]: Dropout	[shape]: [None, 30, 32] 
+41.2% memory has been used
+[layer]: MaxPooling1D	[shape]: [None, 1, 32] 
+41.2% memory has been used
+[layer]: Reshape	[shape]: [None, None] 
+41.2% memory has been used
+[layer]: Dense	[shape]: [None, 32] 
+41.2% memory has been used
+[layer]: Conv1D	[shape]: [None, 289, 32] 
+41.2% memory has been used
+[layer]: Dropout	[shape]: [None, 289, 32] 
+41.2% memory has been used
+[layer]: MaxPooling1D	[shape]: [None, 96, 32] 
+41.2% memory has been used
+[layer]: Conv1D	[shape]: [None, 96, 32] 
+41.2% memory has been used
+[layer]: Dropout	[shape]: [None, 96, 32] 
+41.2% memory has been used
+[layer]: HadamarDot	[shape]: [None, 96, 32] 
+41.2% memory has been used
+[layer]: Reshape	[shape]: [None, None] 
+41.2% memory has been used
+[layer]: Dense	[shape]: [None, 30] 
+41.2% memory has been used
+[layer]: Dropout	[shape]: [None, 30] 
+41.2% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+41.2% memory has been used
+[layer]: Add	[shape]: [None, 1] 
+41.2% memory has been used
+[Model] Model Compile Done.
+[01-11-2019 23:29:07]	[Train:train] Iter:0	loss=1.081857
+[01-11-2019 23:29:17]	[Eval:test] Iter:0	map=0.218588
+[01-11-2019 23:31:38]	[Eval:valid] Iter:0	map=0.234282
+[01-11-2019 23:33:59]	[Train:train] Iter:1	loss=1.014922
+[01-11-2019 23:34:05]	[Eval:test] Iter:1	map=0.221062
+[01-11-2019 23:36:13]	[Eval:valid] Iter:1	map=0.237308
+[01-11-2019 23:38:22]	[Train:train] Iter:2	loss=1.045641
+[01-11-2019 23:38:27]	[Eval:test] Iter:2	map=0.221223
+[01-11-2019 23:40:43]	[Eval:valid] Iter:2	map=0.237873
+[01-11-2019 23:42:59]	[Train:train] Iter:3	loss=0.980310
+[01-11-2019 23:43:04]	[Eval:test] Iter:3	map=0.223697
+[01-11-2019 23:45:34]	[Eval:valid] Iter:3	map=0.238746
+[01-11-2019 23:48:03]	[Train:train] Iter:4	loss=0.971672
+[01-11-2019 23:48:09]	[Eval:test] Iter:4	map=0.223291
+[01-11-2019 23:50:31]	[Eval:valid] Iter:4	map=0.240106
+[01-11-2019 23:52:55]	[Train:train] Iter:5	loss=1.056578
+[01-11-2019 23:53:01]	[Eval:test] Iter:5	map=0.225779
+[01-11-2019 23:55:30]	[Eval:valid] Iter:5	map=0.240649
+[01-11-2019 23:57:59]	[Train:train] Iter:6	loss=1.031213
+[01-11-2019 23:58:04]	[Eval:test] Iter:6	map=0.226413
+[01-12-2019 00:00:34]	[Eval:valid] Iter:6	map=0.240549
+[01-12-2019 00:03:03]	[Train:train] Iter:7	loss=0.956566
+[01-12-2019 00:03:08]	[Eval:test] Iter:7	map=0.223878
+[01-12-2019 00:05:37]	[Eval:valid] Iter:7	map=0.237040
+[01-12-2019 00:08:03]	[Train:train] Iter:8	loss=0.877200
+[01-12-2019 00:08:08]	[Eval:test] Iter:8	map=0.226608
+[01-12-2019 00:10:40]	[Eval:valid] Iter:8	map=0.244235
+[01-12-2019 00:13:12]	[Train:train] Iter:9	loss=0.913348
+[01-12-2019 00:13:17]	[Eval:test] Iter:9	map=0.225803
+[01-12-2019 00:15:47]	[Eval:valid] Iter:9	map=0.243101
+[01-12-2019 00:18:17]	[Train:train] Iter:10	loss=0.842510
+[01-12-2019 00:18:22]	[Eval:test] Iter:10	map=0.232846
+[01-12-2019 00:20:51]	[Eval:valid] Iter:10	map=0.250953
+[01-12-2019 00:23:20]	[Train:train] Iter:11	loss=0.956236
+[01-12-2019 00:23:25]	[Eval:test] Iter:11	map=0.237092
+[01-12-2019 00:25:53]	[Eval:valid] Iter:11	map=0.252812
+[01-12-2019 00:28:20]	[Train:train] Iter:12	loss=0.860072
+[01-12-2019 00:28:25]	[Eval:test] Iter:12	map=0.238102
+[01-12-2019 00:30:54]	[Eval:valid] Iter:12	map=0.254147
+[01-12-2019 00:33:23]	[Train:train] Iter:13	loss=0.877630
+[01-12-2019 00:33:28]	[Eval:test] Iter:13	map=0.242260
+[01-12-2019 00:35:56]	[Eval:valid] Iter:13	map=0.258144
+[01-12-2019 00:38:25]	[Train:train] Iter:14	loss=0.816087
+[01-12-2019 00:38:30]	[Eval:test] Iter:14	map=0.239061
+[01-12-2019 00:40:59]	[Eval:valid] Iter:14	map=0.256475
+[01-12-2019 00:43:28]	[Train:train] Iter:15	loss=0.859395
+[01-12-2019 00:43:33]	[Eval:test] Iter:15	map=0.246275
+[01-12-2019 00:46:01]	[Eval:valid] Iter:15	map=0.260336
+[01-12-2019 00:48:29]	[Train:train] Iter:16	loss=0.787799
+[01-12-2019 00:48:34]	[Eval:test] Iter:16	map=0.247424
+[01-12-2019 00:51:02]	[Eval:valid] Iter:16	map=0.262697
+[01-12-2019 00:54:09]	[Train:train] Iter:17	loss=0.835811
+[01-12-2019 00:54:15]	[Eval:test] Iter:17	map=0.248668
+[01-12-2019 01:00:36]	[Eval:valid] Iter:17	map=0.264379
+[01-12-2019 01:07:09]	[Train:train] Iter:18	loss=0.845234
+[01-12-2019 01:07:15]	[Eval:test] Iter:18	map=0.250153
+[01-12-2019 01:13:43]	[Eval:valid] Iter:18	map=0.263010
+[01-12-2019 01:19:09]	[Train:train] Iter:19	loss=0.781719
+[01-12-2019 01:19:14]	[Eval:test] Iter:19	map=0.250647
+[01-12-2019 01:21:43]	[Eval:valid] Iter:19	map=0.264677
+[01-12-2019 01:24:12]	[Train:train] Iter:20	loss=0.839122
+[01-12-2019 01:24:16]	[Eval:test] Iter:20	map=0.250934
+[01-12-2019 01:26:45]	[Eval:valid] Iter:20	map=0.268136
+[01-12-2019 01:29:15]	[Train:train] Iter:21	loss=0.801701
+[01-12-2019 01:29:20]	[Eval:test] Iter:21	map=0.251122
+[01-12-2019 01:31:50]	[Eval:valid] Iter:21	map=0.269904
+[01-12-2019 01:37:53]	[Train:train] Iter:22	loss=0.751353
+[01-12-2019 01:37:59]	[Eval:test] Iter:22	map=0.250544
+[01-12-2019 01:44:17]	[Eval:valid] Iter:22	map=0.269551
+[01-12-2019 01:50:50]	[Train:train] Iter:23	loss=0.835779
+[01-12-2019 01:50:55]	[Eval:test] Iter:23	map=0.246332
+[01-12-2019 01:57:28]	[Eval:valid] Iter:23	map=0.265576
+[01-12-2019 02:03:58]	[Train:train] Iter:24	loss=0.758761
+[01-12-2019 02:04:04]	[Eval:test] Iter:24	map=0.246393
+[01-12-2019 02:10:30]	[Eval:valid] Iter:24	map=0.262410
+[01-12-2019 02:16:49]	[Train:train] Iter:25	loss=0.740513
+[01-12-2019 02:16:54]	[Eval:test] Iter:25	map=0.248297
+[01-12-2019 02:23:10]	[Eval:valid] Iter:25	map=0.264915
+[01-12-2019 02:29:37]	[Train:train] Iter:26	loss=0.750321
+[01-12-2019 02:29:42]	[Eval:test] Iter:26	map=0.253129
+[01-12-2019 02:35:29]	[Eval:valid] Iter:26	map=0.269452
+[01-12-2019 02:41:24]	[Train:train] Iter:27	loss=0.751244
+[01-12-2019 02:41:30]	[Eval:test] Iter:27	map=0.250831
+[01-12-2019 02:47:24]	[Eval:valid] Iter:27	map=0.268626
+[01-12-2019 02:53:19]	[Train:train] Iter:28	loss=0.687575
+[01-12-2019 02:53:24]	[Eval:test] Iter:28	map=0.254122
+[01-12-2019 02:59:24]	[Eval:valid] Iter:28	map=0.272696
+{
+  "inputs": {
+    "test": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "predict": {
+      "phase": "PREDICT", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/MSMarco/relation_test.txt", 
+      "batch_list": 10
+    }, 
+    "train": {
+      "relation_file": "./data/MSMarco/relation_train.txt", 
+      "input_type": "PairGenerator", 
+      "batch_size": 100, 
+      "batch_per_iter": 5, 
+      "phase": "TRAIN", 
+      "query_per_iter": 50, 
+      "use_iter": false
+    }, 
+    "share": {
+      "vocab_size": 534432, 
+      "use_dpool": false, 
+      "embed_size": 50, 
+      "target_mode": "ranking", 
+      "text1_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "text2_corpus": "./data/MSMarco/corpus_preprocessed.txt", 
+      "embed_path": "./data/MSMarco/embed_glove_d50_norm", 
+      "text1_maxlen": 30, 
+      "train_embed": false, 
+      "text2_maxlen": 289
+    }, 
+    "valid": {
+      "phase": "EVAL", 
+      "input_type": "ListGenerator", 
+      "relation_file": "./data/MSMarco/relation_valid.txt", 
+      "batch_list": 10
+    }
+  }, 
+  "global": {
+    "optimizer": "adam", 
+    "num_iters": 400, 
+    "save_weights_iters": 10, 
+    "learning_rate": 0.001, 
+    "test_weights_iters": 400, 
+    "weights_file": "examples/msmarco/weights/duet.msmarco.weights", 
+    "model_type": "PY", 
+    "display_interval": 10
+  }, 
+  "outputs": {
+    "predict": {
+      "save_format": "TREC", 
+      "save_path": "predict.test.duet.msmarco_10percent.txt"
+    }
+  }, 
+  "losses": [
+    {
+      "object_name": "rank_hinge_loss", 
+      "object_params": {
+        "margin": 1.0
+      }
+    }
+  ], 
+  "metrics": [
+    "map"
+  ], 
+  "net_name": "DUET", 
+  "model": {
+    "model_py": "duet.DUET", 
+    "setting": {
+      "dm_hidden_sizes": [
+        30
+      ], 
+      "dm_d_mpool": 3, 
+      "lm_kernel_count": 32, 
+      "dm_dropout_rate": 0.5, 
+      "dm_kernel_count": 32, 
+      "lm_dropout_rate": 0.5, 
+      "dm_q_hidden_size": 32, 
+      "dm_kernel_size": 3, 
+      "lm_hidden_sizes": [
+        30
+      ]
+    }, 
+    "model_path": "./matchzoo/models/"
+  }
+}
+[./data/MSMarco/embed_glove_d50_norm]
+	Embedding size: 534432
+Generate numpy embed: (534432, 50)
+[Embedding] Embedding Load Done.
+[Input] Process Input Tags. [u'predict'] in PREDICT.
+[./data/MSMarco/corpus_preprocessed.txt]
+	Data size: 1813717
+[Dataset] 1 Dataset Load Done.
+{u'relation_file': u'./data/MSMarco/relation_test.txt', u'vocab_size': 534432, u'use_dpool': False, u'embed_size': 50, u'target_mode': u'ranking', u'input_type': u'ListGenerator', u'batch_list': 10, u'text1_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'text2_corpus': u'./data/MSMarco/corpus_preprocessed.txt', u'embed_path': u'./data/MSMarco/embed_glove_d50_norm', u'text1_maxlen': 30, u'phase': u'PREDICT', 'embed': array([[-0.180141,  0.118711, -0.061135, ..., -0.011023,  0.014752,
+         0.149688],
+       [ 0.059426,  0.009634,  0.051523, ...,  0.259029,  0.032043,
+         0.15531 ],
+       [-0.154884, -0.251299, -0.239199, ...,  0.069709, -0.045894,
+         0.102536],
+       ...,
+       [-0.20787 , -0.03346 ,  0.236553, ...,  0.105165, -0.270588,
+         0.133882],
+       [ 0.294963, -0.169838, -0.111852, ..., -0.062208,  0.015724,
+        -0.082716],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,
+         0.      ]], dtype=float32), u'train_embed': False, u'text2_maxlen': 289}
+[./data/MSMarco/relation_test.txt]
+	Instance size: 280652
+List Instance Count: 5558
+[ListGenerator] init done
+[DUET] init done
+[layer]: Input	[shape]: [None, 30] 
+38.6% memory has been used
+[layer]: Input	[shape]: [None, 289] 
+38.6% memory has been used
+[layer]: Embedding	[shape]: [None, 30, 50] 
+38.6% memory has been used
+[layer]: Embedding	[shape]: [None, 289, 50] 
+38.6% memory has been used
+[layer]: XOR	[shape]: [None, 30, 289] 
+38.6% memory has been used
+[layer]: Conv1D	[shape]: [None, 30, 32] 
+38.6% memory has been used
+[layer]: Dropout	[shape]: [None, 30, 32] 
+38.6% memory has been used
+[layer]: Reshape	[shape]: [None, None] 
+38.6% memory has been used
+[layer]: Dense	[shape]: [None, 30] 
+38.6% memory has been used
+[layer]: Dropout	[shape]: [None, 30] 
+38.6% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+38.6% memory has been used
+[layer]: Conv1D	[shape]: [None, 30, 32] 
+38.6% memory has been used
+[layer]: Dropout	[shape]: [None, 30, 32] 
+38.6% memory has been used
+[layer]: MaxPooling1D	[shape]: [None, 1, 32] 
+38.6% memory has been used
+[layer]: Reshape	[shape]: [None, None] 
+38.6% memory has been used
+[layer]: Dense	[shape]: [None, 32] 
+38.6% memory has been used
+[layer]: Conv1D	[shape]: [None, 289, 32] 
+38.6% memory has been used
+[layer]: Dropout	[shape]: [None, 289, 32] 
+38.6% memory has been used
+[layer]: MaxPooling1D	[shape]: [None, 96, 32] 
+38.6% memory has been used
+[layer]: Conv1D	[shape]: [None, 96, 32] 
+38.6% memory has been used
+[layer]: Dropout	[shape]: [None, 96, 32] 
+38.6% memory has been used
+[layer]: HadamarDot	[shape]: [None, 96, 32] 
+38.6% memory has been used
+[layer]: Reshape	[shape]: [None, None] 
+38.6% memory has been used
+[layer]: Dense	[shape]: [None, 30] 
+38.6% memory has been used
+[layer]: Dropout	[shape]: [None, 30] 
+38.6% memory has been used
+[layer]: Dense	[shape]: [None, 1] 
+38.6% memory has been used
+[layer]: Add	[shape]: [None, 1] 
+38.6% memory has been used
