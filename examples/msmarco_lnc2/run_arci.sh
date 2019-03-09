@@ -2,9 +2,9 @@ cd ../../
 
 currpath=`pwd`
 # train the model
-python matchzoo/main.py --phase train --model_file ${currpath}/examples/msmarco_lnc2_test/config/arci_msmarco_lnc2_test.config
+python matchzoo/main.py --phase train --model_file ${currpath}/examples/msmarco_lnc2/config/arci_msmarco.config
 
 
 # predict with the model
 
-python matchzoo/main.py --phase predict --model_file ${currpath}/examples/msmarco_lnc2_test/config/arci_msmarco_lnc2_test.config
+python matchzoo/main.py --phase predict --model_file ${currpath}/examples/msmarco_lnc2/config/arci_msmarco.config
