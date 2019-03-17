@@ -19,3 +19,4 @@ log/*
 MatchZoo.egg-info/
 *.zip
 !msmarco_predict_10percent_289_30/*
+!long_results/*
